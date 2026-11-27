@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>SkillRegistory · 经典叠片</title>
+  <rect width="256" height="256" rx="56" fill="#0D1117"/>
+  <g stroke="#58A6FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M128 54 202 96 128 138 54 96Z"/>
+    <path d="M54 130 128 172 202 130"/>
+    <path d="M54 164 128 206 202 164"/>
+  </g>
+</svg>

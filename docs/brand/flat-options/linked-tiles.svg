@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>SkillRegistory · 连环菱片</title>
+  <rect width="256" height="256" rx="56" fill="#0D1117"/>
+  <path d="M112 54 174 99 112 144 50 99Z" stroke="#58A6FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M144 112 206 157 144 202 82 157Z" stroke="#0D1117" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M144 112 206 157 144 202 82 157Z" stroke="#58A6FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

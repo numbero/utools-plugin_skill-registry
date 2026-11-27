@@ -1,0 +1,34 @@
+{
+  "main": "index.html",
+  "logo": "logo-skillregistory.png",
+  "preload": "preload.js",
+  "pluginSetting": {
+    "single": true,
+    "height": 700
+  },
+  "features": [
+    {
+      "code": "skill-registry",
+      "description": "SkillRegistory · 管理工作区 Skills 与本机中心仓库",
+      "platform": "darwin",
+      "cmds": [
+        "SkillRegistory",
+        "技能管理"
+      ]
+    },
+    {
+      "code": "skill-registry-folder",
+      "description": "管理此文件夹的 Skills",
+      "platform": "darwin",
+      "cmds": [
+        {
+          "type": "files",
+          "label": "管理此文件夹的 Skills",
+          "fileType": "directory",
+          "minLength": 1,
+          "maxLength": 1
+        }
+      ]
+    }
+  ]
+}

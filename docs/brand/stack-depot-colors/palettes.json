@@ -1,0 +1,8 @@
+[
+  {"id":"turquoise","name":"松石青","description":"清爽、克制","stroke":"#64D5C5","background":"#101D1C"},
+  {"id":"sage","name":"苔叶绿","description":"柔和、沉稳","stroke":"#AFCD98","background":"#181D14"},
+  {"id":"amber","name":"暖琥珀","description":"温暖、醒目","stroke":"#EDBC70","background":"#211A11"},
+  {"id":"lavender","name":"灰紫","description":"低饱和、安静","stroke":"#B8A7E7","background":"#1B1725"},
+  {"id":"coral","name":"珊瑚橙","description":"轻快、鲜明","stroke":"#ED9C86","background":"#241916"},
+  {"id":"porcelain","name":"瓷白墨色","description":"浅底、干净","stroke":"#4E625A","background":"#F0F3EE"}
+]

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>SkillRegistory · 立方仓</title>
+  <rect width="256" height="256" rx="56" fill="#0D1117"/>
+  <g stroke="#58A6FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M128 50 202 92V172L128 214 54 172V92Z"/>
+    <path d="M54 92 128 134 202 92M128 134V214"/>
+  </g>
+</svg>

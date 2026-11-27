@@ -1,0 +1,8 @@
+[
+  {"id":"classic-stack","name":"经典叠片","description":"三层结构，最接近原图标"},
+  {"id":"light-stack","name":"双层轻叠","description":"减少一层，轮廓更轻"},
+  {"id":"offset-cards","name":"错位叠卡","description":"正面卡片，规整直接"},
+  {"id":"shared-source","name":"同源连接","description":"一个来源，连接多个目标"},
+  {"id":"linked-tiles","name":"连环菱片","description":"交叠菱形，突出引用关系"},
+  {"id":"registry-cube","name":"立方仓","description":"封闭结构，突出中心仓库"}
+]

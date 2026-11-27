@@ -1,0 +1,13 @@
+import { build as buildUI } from 'vite';
+import { build } from 'esbuild';
+import { mkdir, rm, copyFile, readFile, writeFile } from 'node:fs/promises';
+await rm('dist', { recursive: true, force: true });
+await buildUI();
+await build({ entryPoints: ['bridge/preload.ts'], outfile: 'dist/preload.js', bundle: true, platform: 'node', format: 'cjs', target: 'node20', external: ['electron'], sourcemap: false });
+await mkdir('dist', { recursive: true });
+const manifest = JSON.parse(await readFile('public/plugin.json', 'utf8'));
+if (!/^[a-zA-Z0-9_.-]+\.png$/.test(manifest.logo)) throw new Error('插件图标需为 public/ 下的 PNG 文件。');
+for (const file of ['plugin.json', manifest.logo]) await copyFile(`public/${file}`, `dist/${file}`);
+if (manifest.logo !== 'logo.png') await rm('dist/logo.png', { force: true });
+await writeFile('dist/package.json', JSON.stringify({ name: 'skillregistory', version: '0.1.0', type: 'commonjs' }, null, 2));
+console.log('可在 uTools 开发者工具中导入 dist/plugin.json');

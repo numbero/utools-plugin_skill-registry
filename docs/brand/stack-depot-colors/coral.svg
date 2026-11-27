@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>SkillRegistory · 叠片仓 · 珊瑚橙</title>
+  <rect width="256" height="256" rx="56" fill="#241916"/>
+  <g stroke="#ED9C86" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M54 114V186Q54 198 66 198H190Q202 198 202 186V114"/>
+    <path d="M128 56 182 86 128 116 74 86Z"/>
+    <path d="M74 116 128 146 182 116"/>
+    <path d="M110 174H146"/>
+  </g>
+</svg>

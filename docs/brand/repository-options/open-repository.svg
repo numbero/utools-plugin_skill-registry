@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>SkillRegistory · 开口仓</title>
+  <rect width="256" height="256" rx="56" fill="#0D1117"/>
+  <g stroke="#58A6FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M128 84 194 122 128 160 62 122Z"/>
+    <path d="M62 122V178L128 216 194 178V122M128 160V216"/>
+    <path d="M62 122 44 100 110 62 128 84 146 62 212 100 194 122"/>
+  </g>
+</svg>

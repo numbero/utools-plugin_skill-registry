@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>SkillRegistory · 同源连接</title>
+  <rect width="256" height="256" rx="56" fill="#0D1117"/>
+  <g stroke="#58A6FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M128 52 164 74 128 96 92 74Z"/>
+    <path d="M128 96V124M78 166V124H178V166"/>
+    <path d="M78 166 108 184 78 202 48 184Z"/>
+    <path d="M178 166 208 184 178 202 148 184Z"/>
+  </g>
+</svg>

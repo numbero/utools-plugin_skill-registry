@@ -1,0 +1,6 @@
+[
+  {"id":"warehouse-gate","name":"极简仓门","description":"屋顶与卷帘门，仓库感最直接"},
+  {"id":"archive-vault","name":"归档仓","description":"盒体与取用口，抽象收纳空间"},
+  {"id":"open-repository","name":"开口仓","description":"开放入口，强调资源的存取"},
+  {"id":"stack-depot","name":"叠片仓","description":"保留叠片，增加仓体边界"}
+]

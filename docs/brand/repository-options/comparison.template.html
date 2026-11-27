@@ -1,0 +1,48 @@
+<div id="sr-repository-icon-options" aria-label="SkillRegistory 仓库图标方案">
+  <div class="sr-ri-grid" role="group" aria-label="选择仓库图标方案">
+    <button type="button" class="sr-ri-option cursor-interaction" data-choice="warehouse-gate" aria-pressed="false"><img alt="" width="128" height="128"><strong>极简仓门</strong><span>屋顶与卷帘门，仓库感最直接</span></button>
+    <button type="button" class="sr-ri-option cursor-interaction" data-choice="archive-vault" aria-pressed="true"><img alt="" width="128" height="128"><strong>归档仓</strong><span>盒体与取用口，抽象收纳空间</span></button>
+    <button type="button" class="sr-ri-option cursor-interaction" data-choice="open-repository" aria-pressed="false"><img alt="" width="128" height="128"><strong>开口仓</strong><span>开放入口，强调资源的存取</span></button>
+    <button type="button" class="sr-ri-option cursor-interaction" data-choice="stack-depot" aria-pressed="false"><img alt="" width="128" height="128"><strong>叠片仓</strong><span>保留叠片，增加仓体边界</span></button>
+  </div>
+  <div class="sr-ri-selected" aria-live="polite"><span>选中：<strong data-selected-name>归档仓</strong></span><div class="sr-ri-size"><img data-size="32" alt="选中图标的 32 像素预览" width="32" height="32"><span>32px</span></div><div class="sr-ri-size"><img data-size="48" alt="选中图标的 48 像素预览" width="48" height="48"><span>48px</span></div></div>
+</div>
+<style>
+#sr-repository-icon-options{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:light-dark(#24292f,#e6edf3);font-size:14px;line-height:1.5}
+#sr-repository-icon-options *{box-sizing:border-box}
+#sr-repository-icon-options .sr-ri-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#sr-repository-icon-options .sr-ri-option{display:flex;align-items:center;flex-direction:column;gap:8px;min-width:0;margin:0;padding:14px 9px;border:1px solid transparent;border-radius:10px;background:transparent;color:inherit;font:inherit;text-align:center}
+#sr-repository-icon-options .sr-ri-option[aria-pressed="true"]{border-color:light-dark(#0969da,#58a6ff);background:light-dark(#ddf4ff,#12233c)}
+#sr-repository-icon-options .sr-ri-option strong{font-size:14px;font-weight:500}
+#sr-repository-icon-options .sr-ri-option span{font-size:12px;color:light-dark(#57606a,#8b949e);overflow-wrap:anywhere}
+#sr-repository-icon-options .sr-ri-option img{display:block;max-width:100%;height:auto}
+#sr-repository-icon-options .sr-ri-selected{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding-top:18px;margin-top:18px;border-top:1px solid light-dark(#d0d7de,#30363d);font-size:13px}
+#sr-repository-icon-options .sr-ri-selected>span{margin-right:auto}
+#sr-repository-icon-options .sr-ri-selected strong{font-weight:500}
+#sr-repository-icon-options .sr-ri-size{display:flex;align-items:center;gap:9px;color:light-dark(#57606a,#8b949e);font-size:12px}
+@media(max-width:440px){#sr-repository-icon-options .sr-ri-grid{gap:8px}#sr-repository-icon-options .sr-ri-option{padding:12px 6px}#sr-repository-icon-options .sr-ri-selected{gap:16px}}
+</style>
+<script>
+(() => {
+  const root = document.getElementById('sr-repository-icon-options');
+  const options = __REPOSITORY_ICON_OPTIONS__;
+  let selected = 'archive-vault';
+  const valid = value => options.some(option => option.id === value);
+  try { const saved = window.openai?.widgetState?.privateContent; if (saved?.repositoryIconVersion === 1 && valid(saved.selected)) selected = saved.selected; } catch {}
+  root.querySelectorAll('button[data-choice]').forEach(button => { button.querySelector('img').src = options.find(option => option.id === button.dataset.choice).images[128]; });
+  function render() {
+    const option = options.find(option => option.id === selected);
+    root.querySelectorAll('button[data-choice]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.choice === selected)));
+    root.querySelector('[data-selected-name]').textContent = option.name;
+    [32, 48].forEach(size => { root.querySelector(`[data-size="${size}"]`).src = option.images[size]; });
+  }
+  root.addEventListener('click', event => {
+    const button = event.target.closest('button[data-choice]');
+    if (!button || !root.contains(button)) return;
+    selected = button.dataset.choice; render();
+    try { window.openai?.setWidgetState({modelContent:{iconDirection:'仓库语义 · 简洁扁平',selectedIcon:options.find(option=>option.id===selected).name},privateContent:{repositoryIconVersion:1,selected}})?.catch(()=>{}); } catch {}
+  });
+  window.addEventListener('openai:set_globals', event => { const saved = event.detail?.globals?.widgetState?.privateContent; if (saved?.repositoryIconVersion === 1 && valid(saved.selected)) { selected = saved.selected; render(); } });
+  render();
+})();
+</script>

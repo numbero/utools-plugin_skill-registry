@@ -1,0 +1,528 @@
+<div id="sr-prototype" data-example="initialize">
+  <div class="sr-preview-label">SkillRegistory <span>工作区初始化 · 示例数据</span></div>
+  <div id="sr-workbench" class="sr" aria-label="SkillRegistory 工作台"></div>
+</div>
+<style>
+#sr-prototype{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:light-dark(#24292f,#e6edf3)}
+#sr-prototype *{box-sizing:border-box}
+#sr-prototype .sr-preview-label{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:0 0 12px;font-size:11px;letter-spacing:1.6px;font-weight:600;color:light-dark(#0969da,#58a6ff)}
+#sr-prototype .sr-preview-label span{font-size:12px;letter-spacing:0;font-weight:400;color:light-dark(#57606a,#8b949e)}
+#sr-prototype .sr{color-scheme:dark;--s-bg:#0d1117;--s-side:#010409;--s-soft:#161b22;--s-line:#30363d;--s-ink:#e6edf3;--s-muted:#8b949e;--s-accent:#58a6ff;--s-primary:#238636;--s-on:#ffffff;--s-button:#21262d;--s-input:#010409;--s-tint:#12233c;--s-success:#3fb950;--s-success-bg:#14261b;--s-warn:#d29922;--s-warn-bg:#2d2411;--s-red:#f85149;--s-red-bg:#2b171b;--s-row:16px;position:relative;background:var(--s-bg);color:var(--s-ink);font-size:13px;line-height:1.55;border:1px solid var(--s-line);border-radius:14px;display:flex;flex-direction:column;height:700px;min-height:0;max-height:700px;overflow:hidden;isolation:isolate;text-align:left;box-shadow:0 8px 32px #01040940}
+#sr-prototype button,#sr-prototype input,#sr-prototype textarea,#sr-prototype select{font:inherit}
+#sr-prototype button{cursor:pointer}
+#sr-prototype button:disabled{opacity:.45;cursor:not-allowed}
+#sr-prototype button:focus-visible,#sr-prototype input:focus-visible,#sr-prototype textarea:focus-visible,#sr-prototype select:focus-visible{outline:2px solid var(--s-accent);outline-offset:3px}
+#sr-prototype .sr-host{background:var(--s-side);flex:0 0 52px;height:52px;display:flex;align-items:center;gap:12px;padding:0 110px 0 20px;border-bottom:1px solid var(--s-line);font-size:15px;position:relative}
+#sr-prototype .sr-host .sr-host-name{color:var(--s-muted);font-size:11px;position:absolute;right:22px;letter-spacing:.4px}
+#sr-prototype .sr-key{border:1px solid var(--s-line);padding:0 5px;border-radius:4px;font-size:11px;color:var(--s-muted);white-space:nowrap}
+#sr-prototype .sr-layout{flex:1 1 0;display:grid;grid-template-columns:200px minmax(0,1fr);grid-template-rows:minmax(0,1fr);min-height:0;overflow:hidden}
+#sr-prototype .sr-side{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;background:var(--s-side);padding:22px 12px;display:flex;flex-direction:column;gap:22px;border-right:1px solid var(--s-line)}
+#sr-prototype .sr-brand{display:flex;align-items:center;gap:10px;padding:0 8px;font-size:13px;line-height:1.35;font-weight:600;letter-spacing:-.2px}
+#sr-prototype .sr-brand-icon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid var(--s-line);background:var(--s-bg);border-radius:9px;color:var(--s-accent)}
+#sr-prototype .sr-brand small{display:block;color:var(--s-muted);font-size:11px;font-weight:400;letter-spacing:1.2px;margin-top:2px}
+#sr-prototype .sr-section-label{font-size:11px;letter-spacing:1.2px;color:var(--s-muted);padding:0 10px;margin-bottom:7px;text-transform:uppercase}
+#sr-prototype .sr-nav{width:100%;border:0;background:transparent;display:flex;align-items:center;gap:9px;text-align:left;padding:9px 10px;border-radius:7px;color:var(--s-muted);margin:2px 0;font-size:12px}
+#sr-prototype .sr-nav.active{background:var(--s-soft);color:var(--s-ink);font-weight:600;box-shadow:inset 2px 0 var(--s-accent)}
+#sr-prototype .sr-nav:hover{background:var(--s-soft)}
+#sr-prototype .sr-nav .sr-count{margin-left:auto;font-size:11px;opacity:.8}
+#sr-prototype .sr-settings-group{margin-top:22px}
+#sr-prototype .sr-settings-group>h2{font-size:13px;padding-bottom:8px;border-bottom:1px solid var(--s-line);margin:0}
+#sr-prototype .sr-setting-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 0;border-bottom:1px solid var(--s-line)}
+#sr-prototype .sr-setting-copy{flex:1;min-width:160px}
+#sr-prototype .sr-setting-copy h3{font-size:12px;font-weight:500;margin:0 0 5px}
+#sr-prototype .sr-setting-copy .sr-sub{font-size:11px;margin-top:5px}
+#sr-prototype .sr-change-row{display:grid;grid-template-columns:74px minmax(0,1fr);gap:12px;padding:11px 0;border-bottom:1px solid var(--s-line)}
+#sr-prototype .sr-scope-switch{display:flex;gap:3px;padding:4px;background:var(--s-bg);border:1px solid var(--s-line);border-radius:8px;min-width:0}
+#sr-prototype .sr-scope-switch button{display:flex;align-items:center;justify-content:center;gap:5px;flex:1;min-width:0;padding:7px 5px;border:0;border-radius:5px;background:transparent;color:var(--s-muted);font-size:11px;white-space:nowrap}
+#sr-prototype .sr-scope-switch button[aria-pressed="true"]{background:var(--s-button);color:var(--s-ink)}
+#sr-prototype .sr-scope-switch .sr-icon{width:14px;height:14px;flex-basis:14px}
+#sr-prototype .sr-scope-banner{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;padding:12px 13px;background:var(--s-soft);border:1px solid var(--s-line);border-radius:8px;margin-bottom:22px}
+#sr-prototype .sr-scope-banner>.sr-icon{color:var(--s-accent);margin-top:3px}
+#sr-prototype .sr-scope-copy{flex:1;min-width:120px}
+#sr-prototype .sr-scope-title{font-size:12px;font-weight:500;margin-bottom:4px}
+#sr-prototype .sr-scope-banner .sr-path{font-size:11px}
+#sr-prototype .sr-scope-banner .sr-note{margin-top:5px}
+#sr-prototype .sr-scope-tag{font-size:11px;border:1px solid var(--s-line);border-radius:5px;padding:2px 6px;color:var(--s-muted);white-space:nowrap}
+#sr-prototype .sr-modal-scope{flex:0 0 auto;display:flex;gap:6px;align-items:center;color:var(--s-accent);font-size:11px;margin-bottom:12px}
+#sr-prototype .sr-scope-transfer{display:grid;gap:9px;margin:12px 0}
+#sr-prototype .sr-scope-transfer>div{padding:10px 12px;border:1px solid var(--s-line);border-radius:7px;background:var(--s-bg);min-width:0}
+#sr-prototype .sr-scope-transfer small{display:block;color:var(--s-muted);font-size:11px;margin-bottom:4px}
+#sr-prototype .sr-top-nav>.sr-scope-switch{flex-basis:100%}
+#sr-prototype .sr-project-switch{border:1px solid var(--s-line);border-radius:8px;padding:10px;background:var(--s-bg);width:100%;display:flex;gap:7px;align-items:center;color:var(--s-ink);text-align:left;font-size:12px}
+#sr-prototype .sr-project-switch small{display:block;font-size:11px;color:var(--s-muted)}
+#sr-prototype .sr-project-switch .sr-chevron{margin-left:auto}
+#sr-prototype .sr-main{min-width:0;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-gutter:stable;padding:25px 25px 20px}
+#sr-prototype .sr-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+#sr-prototype .sr-eyebrow{font-size:11px;color:var(--s-muted);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+#sr-prototype h1{font-size:23px;line-height:1.3;letter-spacing:-.7px;font-weight:600;margin:0 0 7px}
+#sr-prototype h2{font-size:15px;font-weight:600;margin:0 0 7px;line-height:1.5}
+#sr-prototype h3{font-size:13px;font-weight:600;margin:0 0 8px}
+#sr-prototype p{margin:0}
+#sr-prototype .sr-path{font-family:"SFMono-Regular",Consolas,monospace;font-size:11px;color:var(--s-muted);overflow-wrap:anywhere;line-height:1.7}
+#sr-prototype .sr-sub{font-size:12px;color:var(--s-muted)}
+#sr-prototype .sr-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#sr-prototype .sr-button{border:1px solid var(--s-line);background:var(--s-button);color:var(--s-ink);border-radius:7px;min-height:32px;padding:6px 11px;display:inline-flex;gap:6px;align-items:center;justify-content:center;white-space:normal;text-align:center;font-size:12px;line-height:1.4;text-decoration:none}
+#sr-prototype .sr-button:hover{background:var(--s-line)}
+#sr-prototype .sr-button.primary{background:var(--s-primary);color:var(--s-on);border-color:#2ea04380}
+#sr-prototype .sr-button.danger{color:var(--s-red);border-color:color-mix(in srgb,var(--s-red) 25%,var(--s-line))}
+#sr-prototype .sr-button.quiet{border-color:transparent;background:transparent;color:var(--s-muted);padding-inline:6px}
+#sr-prototype .sr-icon{width:16px;height:16px;display:inline-flex;flex:0 0 16px;align-items:center;justify-content:center}
+#sr-prototype .sr-icon svg{width:16px;height:16px;stroke-width:1.6}
+#sr-prototype .sr-tabs{display:flex;align-items:center;gap:21px;border-bottom:1px solid var(--s-line);margin-bottom:17px;flex-wrap:wrap}
+#sr-prototype .sr-tab{padding:8px 1px 11px;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--s-muted);font-size:12px}
+#sr-prototype .sr-tab.active{border-bottom-color:var(--s-accent);color:var(--s-accent);font-weight:600}
+#sr-prototype .sr-tab small{font-size:11px;margin-left:5px;padding:1px 5px;background:var(--s-soft);border-radius:4px}
+#sr-prototype .sr-alert{padding:10px 12px;display:flex;align-items:flex-start;gap:9px;border-radius:7px;background:var(--s-warn-bg);color:var(--s-warn);font-size:11px;margin-bottom:16px}
+#sr-prototype .sr-alert .sr-icon{margin-top:1px}
+#sr-prototype .sr-alert button{margin-left:auto;color:inherit;border:0;background:transparent;white-space:nowrap;padding:0;font-size:11px}
+#sr-prototype .sr-alert.error{background:var(--s-red-bg);color:var(--s-red)}
+#sr-prototype .sr-alert.ok{background:var(--s-soft);color:var(--s-muted)}
+#sr-prototype .sr-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+#sr-prototype .sr-search{display:flex;align-items:center;gap:7px;border:1px solid var(--s-line);border-radius:7px;background:var(--s-input);padding:7px 10px;flex:1;min-width:120px;color:var(--s-muted)}
+#sr-prototype .sr-search input{background:transparent;color:var(--s-ink);border:0;outline:none;width:100%;min-width:0;font-size:11px}
+#sr-prototype .sr-search input::placeholder{color:var(--s-muted)}
+#sr-prototype .sr-select{border:1px solid var(--s-line);border-radius:7px;background:var(--s-bg);color:var(--s-muted);padding:7px;font-size:11px;max-width:100%}
+#sr-prototype .sr-split{display:grid;grid-template-columns:minmax(0,1fr) 242px;gap:19px;align-items:start}
+#sr-prototype .sr-split.no-detail{grid-template-columns:1fr}
+#sr-prototype .sr-list{min-width:0}
+#sr-prototype .sr-list-head{display:flex;justify-content:space-between;padding:6px 9px 9px;color:var(--s-muted);font-size:11px;border-bottom:1px solid var(--s-line)}
+#sr-prototype .sr-item{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--s-line);padding:var(--s-row) 9px;position:relative;border-radius:0;min-width:0}
+#sr-prototype .sr-item.selected{background:var(--s-soft);box-shadow:inset 2px 0 var(--s-accent)}
+#sr-prototype .sr-item:hover{background:var(--s-soft)}
+#sr-prototype .sr-item-main{display:flex;align-items:center;gap:10px;flex:1;min-width:0;background:transparent;border:0;text-align:left;color:var(--s-ink);padding:0}
+#sr-prototype .sr-skill-mark{width:30px;height:33px;border:1px solid var(--s-line);border-radius:7px;display:flex;align-items:center;justify-content:center;color:var(--s-muted);background:var(--s-bg);flex:0 0 30px}
+#sr-prototype .sr-item-copy{min-width:0;flex:1}
+#sr-prototype .sr-name{font-size:12px;font-weight:500;overflow-wrap:anywhere;display:block}
+#sr-prototype .sr-desc{display:block;font-size:11px;color:var(--s-muted);margin-top:3px;overflow-wrap:anywhere}
+#sr-prototype .sr-state{display:flex;align-items:center;gap:5px;font-size:11px;white-space:nowrap;color:var(--s-muted)}
+#sr-prototype .sr-state.ok{color:var(--s-success)}
+#sr-prototype .sr-state.warn{color:var(--s-warn)}
+#sr-prototype .sr-state.error{color:var(--s-red)}
+#sr-prototype .sr-dot{width:5px;height:5px;display:inline-block;border-radius:50%;background:currentColor;flex:0 0 5px}
+#sr-prototype .sr-row-more{border:0;background:transparent;color:var(--s-muted);padding:5px;border-radius:5px;display:flex;align-items:center}
+#sr-prototype .sr-detail{border:1px solid var(--s-line);border-radius:10px;padding:17px 15px;min-width:0;background:var(--s-soft)}
+#sr-prototype .sr-detail-top{display:flex;align-items:center;gap:9px;margin-bottom:13px}
+#sr-prototype .sr-detail h2{font-size:15px;overflow-wrap:anywhere}
+#sr-prototype .sr-badge{font-size:11px;padding:2px 6px;display:inline-flex;gap:4px;align-items:center;background:var(--s-soft);border:1px solid var(--s-line);color:var(--s-muted);border-radius:4px;white-space:nowrap;font-weight:400}
+#sr-prototype .sr-badge.accent{background:var(--s-tint);color:var(--s-accent);border-color:transparent}
+#sr-prototype .sr-badge.connected{background:var(--s-success-bg);color:var(--s-success);border-color:transparent}
+#sr-prototype .sr-detail-label{font-size:11px;color:var(--s-muted);margin:17px 0 6px}
+#sr-prototype .sr-detail-path{padding:8px;background:var(--s-bg);border-radius:5px;font-family:"SFMono-Regular",Consolas,monospace;font-size:11px;overflow-wrap:anywhere;color:var(--s-muted)}
+#sr-prototype .sr-target-line{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--s-line);font-size:11px}
+#sr-prototype .sr-detail-foot{display:flex;gap:4px;flex-wrap:wrap;margin-top:16px}
+#sr-prototype .sr-note{font-size:11px;line-height:1.7;color:var(--s-muted);margin-top:13px}
+#sr-prototype .sr-summary{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:12px 1px 0;font-size:11px;color:var(--s-muted)}
+#sr-prototype .sr-doc{font-size:11px;line-height:1.9;margin-top:9px}
+#sr-prototype .sr-doc h3{font-size:12px;font-weight:500;margin-top:14px}
+#sr-prototype .sr-doc ul{padding-left:17px;margin:6px 0}
+#sr-prototype .sr-footer{flex:0 0 auto;border-top:1px solid var(--s-line);padding:9px 18px;display:flex;justify-content:space-between;align-items:center;gap:9px;flex-wrap:wrap;font-size:11px;color:var(--s-muted);background:var(--s-soft)}
+#sr-prototype .sr-footer span{display:flex;gap:6px;align-items:center}
+#sr-prototype .sr-footer .sr-dot{color:var(--s-success)}
+#sr-prototype .sr-panel{border:1px solid var(--s-line);border-radius:9px;padding:16px;margin-bottom:13px;min-width:0}
+#sr-prototype .sr-panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+#sr-prototype .sr-target-card{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:12px;align-items:start;padding:16px 0;border-bottom:1px solid var(--s-line)}
+#sr-prototype .sr-target-card:last-child{border-bottom:0}
+#sr-prototype .sr-agent-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+#sr-prototype .sr-agent-meta .sr-sub{font-size:11px}
+#sr-prototype .sr-target-path{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:5px}
+#sr-prototype .sr-target-path .sr-path{flex:1;min-width:120px}
+#sr-prototype .sr-path-input{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+#sr-prototype .sr-field .sr-path-input input{flex:1;min-width:140px;width:auto;margin-top:0}
+#sr-prototype .sr-form-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+#sr-prototype .sr-field{display:block;font-size:11px;color:var(--s-muted);margin:14px 0}
+#sr-prototype .sr-field input,#sr-prototype .sr-field textarea,#sr-prototype .sr-field select{display:block;width:100%;padding:9px 10px;margin-top:6px;border:1px solid var(--s-line);border-radius:7px;color:var(--s-ink);background:var(--s-input);font-size:12px;min-width:0}
+#sr-prototype .sr-code{display:block;width:100%;min-height:280px;resize:vertical;font-family:"SFMono-Regular",Consolas,monospace;font-size:12px;line-height:1.9;background:var(--s-soft);border:1px solid var(--s-line);border-radius:8px;color:var(--s-ink);padding:16px;white-space:pre-wrap;overflow-wrap:anywhere}
+#sr-prototype .sr-empty{padding:46px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:11px;background:var(--s-soft);border-radius:9px}
+#sr-prototype .sr-empty .sr-icon{width:30px;height:30px;flex-basis:30px;color:var(--s-muted)}
+#sr-prototype .sr-empty .sr-icon svg{width:30px;height:30px}
+#sr-prototype .sr-empty .sr-init-success{color:var(--s-success)}
+#sr-prototype .sr-init-code{margin:10px 0 0;padding:12px 14px;background:var(--s-bg);border:1px solid var(--s-line);border-radius:7px;font-family:"SFMono-Regular",Consolas,monospace;font-size:12px;line-height:1.8;white-space:pre-wrap}
+#sr-prototype .sr-workspace-option{width:100%;display:flex;align-items:center;gap:10px;padding:12px 4px;border:0;border-bottom:1px solid var(--s-line);background:transparent;color:var(--s-ink);text-align:left}
+#sr-prototype .sr-workspace-option>span:nth-child(2){flex:1;min-width:0}
+#sr-prototype .sr-workspace-option .sr-badge{margin-left:auto}
+#sr-prototype .sr-folder-choice{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:17px}
+#sr-prototype .sr-folder-location{display:flex;align-items:center;gap:8px;padding:9px 11px;background:var(--s-bg);border:1px solid var(--s-line);border-radius:7px;margin-bottom:12px}
+#sr-prototype .sr-workspace-option[aria-pressed="true"]{background:var(--s-tint);color:var(--s-ink)}
+#sr-prototype .sr-init-progress{display:flex;align-items:center;gap:8px;color:var(--s-muted);font-size:12px;padding:12px 0}
+#sr-prototype .sr-group-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+#sr-prototype .sr-group{border:1px solid var(--s-line);border-radius:9px;padding:17px;min-width:0}
+#sr-prototype .sr-group-icons{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px;color:var(--s-accent)}
+#sr-prototype .sr-members{display:flex;gap:5px;flex-wrap:wrap;min-height:48px;margin-top:12px}
+#sr-prototype .sr-members span{align-self:start;font-size:11px;background:var(--s-soft);padding:3px 6px;border-radius:4px;overflow-wrap:anywhere}
+
+
+
+#sr-prototype .sr-modal-layer{position:absolute;inset:52px 0 0;background:#010409a6;z-index:20;display:flex;align-items:flex-start;justify-content:center;padding:28px 18px;backdrop-filter:blur(2px);min-height:0;overflow:hidden}
+#sr-prototype .sr-modal{display:flex;flex-direction:column;width:min(520px,100%);max-height:100%;min-height:0;overflow:hidden;background:var(--s-soft);border:1px solid var(--s-line);border-radius:13px;box-shadow:0 16px 60px #00000026;padding:21px;min-width:0}
+#sr-prototype .sr-modal-head{flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+#sr-prototype .sr-modal-head h2{font-size:18px;margin-bottom:4px;letter-spacing:-.4px}
+#sr-prototype .sr-modal-body{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-gutter:stable}
+#sr-prototype .sr-modal-foot{flex:0 0 auto;display:flex;justify-content:flex-end;gap:8px;align-items:center;margin-top:19px;padding-top:15px;border-top:1px solid var(--s-line);flex-wrap:wrap}
+#sr-prototype .sr-modal-foot .sr-note{margin:0 auto 0 0}
+#sr-prototype .sr-choice{display:flex;gap:10px;align-items:center;padding:10px 5px;border-bottom:1px solid var(--s-line);font-size:12px}
+#sr-prototype .sr-choice input{accent-color:var(--s-accent);width:14px;height:14px;flex:0 0 14px}
+#sr-prototype .sr-choice small{display:block;color:var(--s-muted);font-size:11px;margin-top:2px}
+#sr-prototype .sr-plan-row{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:8px;padding:12px 0;border-bottom:1px solid var(--s-line);font-size:11px;align-items:start}
+#sr-prototype .sr-plan-row .sr-icon{color:var(--s-accent);margin-top:2px}
+#sr-prototype .sr-plan-row.is-conflict .sr-icon{color:var(--s-red)}
+#sr-prototype .sr-plan-row .sr-path{margin-top:4px;font-size:11px}
+#sr-prototype .sr-mini-stats{display:flex;gap:22px;flex-wrap:wrap;padding:12px 0 16px;border-bottom:1px solid var(--s-line)}
+#sr-prototype .sr-mini-stats strong{font-size:22px;font-weight:500;display:block}
+#sr-prototype .sr-mini-stats small{font-size:11px;color:var(--s-muted)}
+#sr-prototype .sr-toast{position:absolute;bottom:45px;left:50%;transform:translateX(-50%);z-index:30;background:var(--s-button);color:var(--s-ink);border:1px solid var(--s-line);padding:10px 15px;display:flex;gap:8px;align-items:center;border-radius:8px;font-size:11px;box-shadow:0 5px 20px #00000020;max-width:calc(100% - 36px)}
+#sr-prototype .sr-top-nav{display:none;flex:0 0 auto}
+#sr-prototype .sr-back{display:none}
+#sr-prototype .sr-top-nav .sr-project-switch{width:auto;margin-right:auto}
+#sr-prototype .sr-top-nav .sr-nav{width:auto;margin:0;white-space:nowrap}
+#sr-prototype .sr-top-nav select{max-width:160px}
+@media(max-width:930px){#sr-prototype .sr-split{grid-template-columns:1fr}#sr-prototype .sr-detail{display:none}#sr-prototype .sr-main.show-detail .sr-list{display:none}#sr-prototype .sr-main.show-detail .sr-detail{display:block}#sr-prototype .sr-main.show-detail .sr-back{display:inline-flex;margin-bottom:12px}}
+@media(max-width:760px){#sr-prototype .sr-layout{grid-template-columns:minmax(0,1fr)}#sr-prototype .sr-side{display:none}#sr-prototype .sr-top-nav{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 16px;background:var(--s-side);border-bottom:1px solid var(--s-line)}#sr-prototype .sr-main{padding:20px 18px}#sr-prototype .sr{height:700px;min-height:0}#sr-prototype .sr-host{padding-left:16px}#sr-prototype .sr-top-nav select{max-width:145px}}
+@media(max-width:520px){#sr-prototype h1{font-size:21px}#sr-prototype .sr-topline{align-items:flex-start}#sr-prototype .sr-main{padding:18px 13px}#sr-prototype .sr-topline>.sr-actions{width:100%}#sr-prototype .sr-group-grid{grid-template-columns:1fr}#sr-prototype .sr-item{padding-inline:5px;gap:4px}#sr-prototype .sr-desc{font-size:11px}#sr-prototype .sr-skill-mark{display:none}#sr-prototype .sr-state{font-size:11px}#sr-prototype .sr-modal-layer{padding:12px 7px}#sr-prototype .sr-modal{padding:16px 13px}#sr-prototype .sr-target-card{grid-template-columns:24px minmax(0,1fr)}#sr-prototype .sr-target-card>.sr-actions{grid-column:2}#sr-prototype .sr-plan-row{grid-template-columns:18px minmax(0,1fr)}#sr-prototype .sr-plan-row>.sr-badge{grid-column:2;justify-self:start}#sr-prototype .sr-top-nav{padding:10px 12px}#sr-prototype .sr-project-switch{padding:7px;font-size:11px}#sr-prototype .sr-host-name{display:none}#sr-prototype .sr-host{padding-right:100px;font-size:13px}#sr-prototype .sr-top-nav .sr-project-switch{max-width:100%}}
+@media(pointer:coarse){#sr-prototype .sr-button,#sr-prototype .sr-nav,#sr-prototype .sr-tab,#sr-prototype .sr-row-more{min-height:44px}#sr-prototype input,#sr-prototype textarea,#sr-prototype select{font-size:16px!important}}
+</style>
+<script>
+(() => {
+  const root = document.getElementById('sr-prototype');
+  const icon = name => `<span class="sr-icon"><i data-lucide="${name}" aria-hidden="true"></i></span>`;
+  const esc = str => String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const initialSkills = [
+    {id:'frontend-design',desc:'设计并构建有辨识度的前端界面',type:'git',project:true,links:['ok','missing'],refs:2,commit:'4c7e8a1'},
+    {id:'handoff',desc:'整理上下文，交接下一阶段工作',type:'local',project:true,links:['ok','ok'],refs:3},
+    {id:'research',desc:'查阅资料并整理可追溯的研究结论',type:'git',project:true,links:['ok','ok'],refs:2,commit:'b912fd0'},
+    {id:'drawio',desc:'创建与维护结构化流程图',type:'git',project:true,links:['ok','conflict'],refs:1,commit:'762c1de'},
+    {id:'theme-factory',desc:'为页面与文档建立一致的视觉主题',type:'git',project:true,links:['ok','missing'],refs:1,commit:'a83d4c2'},
+    {id:'web-testing',desc:'验证页面交互与关键用户流程',type:'local',project:true,links:['ok','ok'],refs:1},
+    {id:'pdf-tools',desc:'提取、合并与检查 PDF 文档',type:'local',project:false,links:[],refs:0},
+    {id:'api-review',desc:'检查 API 契约与错误处理',type:'git',project:false,links:[],refs:0,commit:'e14a69c'}
+  ];
+  const navs = [{id:'project',scope:'workspace',label:'工作区配置',icon:'folder-cog'},{id:'workspace-settings',scope:'workspace',label:'设置',icon:'settings-2'},{id:'registry',scope:'global',label:'中心仓库',icon:'boxes'},{id:'groups',scope:'global',label:'共享分组',icon:'layers'},{id:'presets',scope:'global',label:'目标预设',icon:'scan-line'},{id:'settings',scope:'global',label:'设置',icon:'settings-2'}];
+  const workspaceViews = [{id:'skills',label:'Skills',icon:'list-checks'},{id:'targets',label:'Agent 目标',icon:'bot'},{id:'yaml',label:'项目 YAML',icon:'file-code-2'}];
+  const shared = {density:'舒适',scenario:'标准项目',initOutcome:'成功'};
+  let saved = null;
+  try { saved = window.openai?.widgetState; } catch {}
+  const restored = saved?.privateContent?.navigationVersion===4?saved.privateContent:null;
+  const instances = [];
+  function persist(state) {
+    try { window.openai?.setWidgetState({modelContent:{layout:'工作台',scope:navs.find(n=>n.id===state.page)?.scope==='global'?'全局管理':'当前工作区',workspace:state.project,initialized:state.initialized,page:state.page==='project'?workspaceViews.find(v=>v.id===state.tab)?.label:navs.find(n=>n.id===state.page)?.label,selectedSkill:state.selected},privateContent:{navigationVersion:4,page:state.page,tab:state.tab}})?.catch(()=>{}); } catch {}
+  }
+  function makeApp(id) {
+    const el = document.getElementById(id);
+    const state = {page:navs.some(n=>n.id===restored?.page)?restored.page:'project',tab:workspaceViews.some(v=>v.id===restored?.tab)?restored.tab:'skills',lastWorkspacePage:'project',lastGlobalPage:'registry',skills:structuredClone(initialSkills),selected:'frontend-design',search:'',filter:'all',detail:false,modal:null,toast:'',project:'personal-site',center:'~/.skill-registry/skills',groups:[{name:'daily',desc:'日常开发常用工具',skills:['handoff','research','web-testing']},{name:'design',desc:'界面设计与可视化',skills:['frontend-design','drawio','theme-factory']}],targets:[{id:'claude-code',name:'Claude Code',path:'.claude/skills',source:'项目配置'},{id:'codex',name:'Codex',path:'.codex/skills',source:'自动发现'}],presets:[{id:'claude-code',path:'.claude/skills',default:true},{id:'codex',path:'.codex/skills'},{id:'agent-generic',path:'.agents/skills'},{id:'cursor',path:'.cursor/rules'}],dirty:false,yamlDraft:null,untracked:[],applied:false,checked:false};
+    Object.assign(state,{projectPath:'~/Projects/personal-site',initialized:true,justInitialized:false,initializationStatus:'idle',initFailedOnce:false,workspaceRecords:{},hiddenWorkspaces:[]});
+    let lastFocus=null, toastTimer;
+    const catalog=()=>state.skills.filter(s=>!s.removed);
+    const projectSkills=()=>state.skills.filter(s=>s.project);
+    function defaultTargets(){const p=state.presets.find(p=>p.default)||state.presets[0];return p?[{id:p.id,name:p.id==='claude-code'?'Claude Code':p.id,path:p.path,source:'默认回退'}]:[];}
+    function snapshotWorkspace(){state.workspaceRecords[state.projectPath]={name:state.project,initialized:state.initialized,skillIds:projectSkills().map(s=>s.id),links:Object.fromEntries(projectSkills().map(s=>[s.id,[...s.links]])),targets:structuredClone(state.targets),untracked:[...state.untracked]};}
+    function selectWorkspace(projectPath,{save=true}={}){
+      snapshotWorkspace();
+      const cleaned=projectPath.trim().replace(/\/+$/,'')||'/';
+      state.hiddenWorkspaces=state.hiddenWorkspaces.filter(path=>path!==cleaned);
+      const record=state.workspaceRecords[cleaned]||{name:cleaned.split('/').pop()||cleaned,initialized:false,skillIds:[],links:{},targets:[],untracked:[]};
+      state.projectPath=cleaned;state.project=record.name;state.initialized=record.initialized;state.justInitialized=false;state.initializationStatus='idle';state.initFailedOnce=false;
+      state.targets=structuredClone(record.targets);state.untracked=[...record.untracked];
+      state.skills.forEach(s=>{s.project=record.skillIds.includes(s.id);s.links=[...(record.links[s.id]||[])];});
+      state.workspaceRecords[cleaned]=record;state.yamlDraft=null;state.dirty=false;state.modal=null;state.page='project';state.tab='skills';state.lastWorkspacePage='project';state.search='';state.filter='all';state.detail=false;shared.scenario='标准项目';
+      render();if(save)persist(state);
+    }
+    const scope=()=>navs.find(n=>n.id===state.page)?.scope||'workspace';
+    const workspaceConfig=()=>state.projectPath+'/.skill-registry/config.yaml';
+    function scopeSwitch(){return `<div class="sr-scope-switch" role="group" aria-label="配置作用域"><button type="button" data-action="scope-workspace" aria-pressed="${scope()==='workspace'}">${icon('folder')}工作区</button><button type="button" data-action="scope-global" aria-pressed="${scope()==='global'}">${icon('globe')}全局管理</button></div>`;}
+    function contextPicker(){return scope()==='workspace'?`<button type="button" class="sr-project-switch" data-action="switch-project">${icon('folder')}<span>${esc(state.project)}<small>${state.initialized?'当前工作区':'未初始化'}</small></span><span class="sr-chevron">${icon('chevrons-up-down')}</span></button>`:'';}
+    function scopeBanner(){const global=scope()==='global';const path=global?(state.page==='registry'?state.center:'~/.skill-registry/global.yaml'):workspaceConfig();const notes={registry:'修改这里的 Skill 内容，会影响所有指向它的工作区链接。',groups:'这里维护全局分组。添加到工作区时，只将成员展开为工作区引用。',presets:'这里编辑全局模板；工作区已保存的显式路径不会被自动覆盖。',settings:'本页设置由本机所有工作区共享。'};return `<div class="sr-scope-banner" aria-label="当前作用域">${icon(global?'globe':'folder-cog')}<div class="sr-scope-copy"><div class="sr-scope-title">${global?'全局管理 · 本机共享':'当前工作区 · '+esc(state.project)}</div><div class="sr-path">${!global&&!state.initialized?'待创建：':''}${esc(path)}</div><p class="sr-note">${global?notes[state.page]:state.initialized?state.page==='workspace-settings'?'本页设置仅作用于当前工作区。':'本页维护该工作区的配置；Skill 内容仍来自全局中心。':'未找到 SkillRegistory 配置，可在当前文件夹初始化。'}</p></div><span class="sr-scope-tag">${global?'所有工作区共享':'仅此工作区'}</span></div>`;}
+    const totals=()=>projectSkills().flatMap(s=>s.links).reduce((a,s)=>(a[s]=(a[s]||0)+1,a),{ok:0,missing:0,conflict:0});
+    const btn=(label,action,cls='',extra='')=>`<button type="button" class="sr-button ${cls}" data-action="${action}" ${extra}>${label}</button>`;
+    const notice=(message,type='warn',action='')=>`<div class="sr-alert ${type==='warn'?'':type}" ${type==='error'?'role="alert"':''}>${icon(type==='error'?'circle-alert':type==='ok'?'circle-check':'triangle-alert')}<span>${message}</span>${action?`<button type="button" data-action="${action}">查看详情 →</button>`:''}</div>`;
+    const yamlText=()=>{const skills=projectSkills(),explicit=state.targets.filter(t=>t.source==='项目配置');return (skills.length?`skills:\n${skills.map(s=>'  - '+s.id).join('\n')}\n`:'skills: []\n')+(explicit.length?`\ntargets:\n${explicit.map(t=>'  '+t.id+':\n    path: '+t.path).join('\n')}\n`:'');};
+    function parseDemoYaml(text){
+      const ids=[],targets=[];let mode='',current=null;
+      for(const line of text.split('\n')){
+        if(!line.trim()||line.trim().startsWith('#'))continue;
+        if(/^skills:\s*(\[\])?\s*$/.test(line)){mode='skills';continue;}
+        if(/^targets:\s*(\{\})?\s*$/.test(line)){mode='targets';continue;}
+        const skill=line.match(/^  - ([a-zA-Z0-9_-]+)\s*$/);
+        if(mode==='skills'&&skill){ids.push(skill[1]);continue;}
+        const target=line.match(/^  ([a-zA-Z0-9_-]+):\s*$/);
+        if(mode==='targets'&&target){current={id:target[1],name:target[1],source:'项目配置'};targets.push(current);continue;}
+        const path=line.match(/^    path: (.+?)\s*$/);
+        if(mode==='targets'&&current&&path){current.path=path[1];continue;}
+        throw new Error('稿内演示仅支持 skills 列表与 targets 路径，请保持示例缩进。');
+      }
+      if(!/^skills:/m.test(text)||targets.some(t=>!t.path))throw new Error('配置需要 skills，且每个显式 Target 都需要 path。');
+      if(ids.some(id=>!catalog().some(s=>s.id===id)))throw new Error('配置引用了中心不存在的 Skill。');
+      return {ids:[...new Set(ids)],targets};
+    }
+    const targetDirectory=t=>t.path.startsWith('~/')||t.path.startsWith('/')?t.path:state.projectPath+'/'+t.path;
+    function targetConfigPath(path){const prefix=state.projectPath.replace(/\/$/,'')+'/';return path===state.projectPath?'.':path.startsWith(prefix)?path.slice(prefix.length):path;}
+    function chooseTargetDirectory(draft,fromPanel=false){const current=draft.pathDraft?targetDirectory({path:draft.pathDraft}):state.projectPath;const folders=[...new Set([current,state.projectPath+'/.agents/skills',state.projectPath+'/.claude/skills'])];return openModal('folder-picker',{scope:'workspace',pickerTitle:'选择 Agent 目标目录',selectorTarget:'agent-target',parentPath:state.projectPath,folders,selectedPath:current,returnTo:{type:'target',...draft},cancelToPanel:fromPanel});}
+    const pathFor=(skill,t)=>targetDirectory(t)+'/'+skill;
+    function navHtml(){
+      if(scope()==='workspace')return workspaceViews.map(v=>`<button type="button" class="sr-nav ${state.page==='project'&&state.tab===v.id?'active':''}" data-tab="${v.id}" ${!state.initialized&&v.id!=='skills'?'disabled':''} ${state.page==='project'&&state.tab===v.id?'aria-current="page"':''}>${icon(v.icon)}${v.label}${v.id==='skills'||v.id==='targets'?`<span class="sr-count">${v.id==='skills'?projectSkills().length:state.targets.length}</span>`:''}</button>`).join('')+`<button type="button" class="sr-nav ${state.page==='workspace-settings'?'active':''}" data-page="workspace-settings" ${state.page==='workspace-settings'?'aria-current="page"':''}>${icon('settings-2')}设置</button>`;
+      return navs.filter(n=>n.scope==='global').map(n=>`<button type="button" class="sr-nav ${state.page===n.id?'active':''}" data-page="${n.id}" ${state.page===n.id?'aria-current="page"':''}>${icon(n.icon)}${n.label}${n.id==='registry'?`<span class="sr-count">${catalog().length}</span>`:''}</button>`).join('');
+    }
+    function compactNavigation(){const options=scope()==='workspace'?[...workspaceViews.map(v=>({value:'project:'+v.id,label:v.label})),{value:'workspace-settings',label:'设置'}]:navs.filter(n=>n.scope==='global').map(n=>({value:n.id,label:n.label}));const selected=state.page==='project'?'project:'+state.tab:state.page;return `<div class="sr-top-nav">${scopeSwitch()}${contextPicker()}<select class="sr-select" aria-label="${scope()==='workspace'?'工作区页面':'全局管理页面'}" data-role="nav-select">${options.map(o=>`<option value="${o.value}" ${selected===o.value?'selected':''} ${!state.initialized&&o.value.startsWith('project:')&&o.value!=='project:skills'?'disabled':''}>${o.label}</option>`).join('')}</select></div>`;}
+    function render(){
+      const t=totals(),isSettings=state.page==='workspace-settings'||state.page==='settings';
+      const detailMode=!!(state.detail&&window.matchMedia?.('(max-width:930px)')?.matches);
+      const pageKey=[state.page,state.page==='project'?state.tab:'',scope()==='workspace'?state.projectPath:'',detailMode?'detail':'list'].join('|');
+      const previousMain=el.querySelector('.sr-main'),previousBody=el.querySelector('.sr-modal-body');
+      const mainScroll=previousMain?.dataset?.pageKey===pageKey?previousMain.scrollTop:0;
+      const bodyScroll=previousBody&&previousBody.dataset?.modalType===state.modal?.type?previousBody.scrollTop:0;
+      el.innerHTML=`<div class="sr-host">${icon('search')}<span>SkillRegistory</span><span class="sr-key">↵</span><span class="sr-host-name">uTools</span></div>
+        ${compactNavigation()}
+        <div class="sr-layout"><aside class="sr-side"><div class="sr-brand"><div class="sr-brand-icon">${icon('layers-2')}</div><div>SkillRegistory<small>本机 Skill 管理</small></div></div>${scopeSwitch()}${scope()==='workspace'?`<div>${contextPicker()}</div>`:''}<nav aria-label="${scope()==='workspace'?'工作区导航':'全局导航'}">${navHtml()}</nav></aside><main class="sr-main ${state.detail?'show-detail':''}" data-page-key="${esc(pageKey)}">${scopeBanner()}${renderPage(t)}</main></div>
+        <footer class="sr-footer"><span>${icon(scope()==='workspace'?'folder':'globe')}${scope()==='workspace'?'工作区：'+esc(state.project):'全局共享 · '+catalog().length+' 个 Skill'}</span><span>${isSettings?'设置已加载':scope()==='global'?'修改共享资源前请核对影响范围':!state.initialized?'尚未初始化':state.dirty?'工作区配置有未保存修改':!projectSkills().length?'配置已创建 · 0 个 Skill':t.conflict+' 处链接冲突'}${state.page==='registry'||state.page==='project'&&state.tab==='skills'&&state.initialized&&projectSkills().length?' <span class="sr-key">⌘ K 搜索</span>':''}</span></footer>${state.modal?renderModal():''}${state.toast?`<div class="sr-toast" role="status">${icon('check')}${esc(state.toast)}</div>`:''}`;
+      refreshIcons();
+      const main=el.querySelector('.sr-main'),body=el.querySelector('.sr-modal-body');
+      if(main)main.scrollTop=mainScroll||0;
+      if(body)body.scrollTop=bodyScroll||0;
+    }
+    function refreshIcons(){try{globalThis.lucide?.createIcons({attrs:{width:16,height:16}});}catch{}}
+    function header(eyebrow,title,sub,actions){return `<div class="sr-eyebrow">${esc(eyebrow)}</div><div class="sr-topline"><div style="min-width:0"><h1>${esc(title)}</h1><div class="${sub?.startsWith('~')?'sr-path':'sr-sub'}">${esc(sub||'')}</div></div><div class="sr-actions">${actions||''}</div></div>`;}
+    function renderPage(t){
+      if(state.page==='project'){
+        const view=workspaceViews.find(v=>v.id===state.tab);
+        let head=header('当前工作区 / '+state.project,view?.label||'Skills',state.tab==='skills'?'选择此工作区需要的 Skills，并提供给当前生效的 Agent 目标。':state.tab==='targets'?'查看当前工作区生效的 Agent，以及各自的部署路径、来源和链接状态。':'只编辑此工作区的 config.yaml。',state.initialized&&state.tab==='skills'&&projectSkills().length?btn(icon('plus')+' 从全局中心添加','add-project')+btn(icon('git-pull-request-arrow')+' 应用到此工作区','preview','primary'):state.initialized&&state.tab==='targets'?btn(icon('plus')+' 添加目标','new-target','primary'):'');
+        if(!state.initialized)return head+renderUninitialized();
+        if(state.tab==='skills'&&!projectSkills().length)return head+renderEmptyWorkspace();
+        if(shared.scenario==='YAML 错误')return head+notice('配置无法解析：第 4 行缺少列表标记。原文件已保留。','error')+`<textarea class="sr-code" aria-label="待修复 YAML">skills:\n  - handoff\n  - research\n  frontend-design</textarea><div class="sr-form-row">${btn('查看配置原文','open-file')}${btn('返回正常示例','normal','primary')}</div>`;
+        let external=shared.scenario==='外部修改'?notice('配置已被外部修改。本地草稿保留，保存前需要比较版本。','warn','external'):'';
+        return head+external+`<section aria-label="${esc(view?.label||'工作区配置')}">${state.tab==='targets'?renderTargets():state.tab==='yaml'?renderYaml():`${notice(`期望 ${projectSkills().length*state.targets.length} 条链接：${t.missing} 条待创建，${t.conflict} 处与本地内容冲突。`,'warn','preview')}<div class="sr-toolbar"><label class="sr-search">${icon('search')}<input data-role="search" aria-label="搜索项目 Skill" placeholder="搜索 Skill 名称、描述…" value="${esc(state.search)}"></label><span class="sr-sub" style="font-size:11px">${projectSkills().length} 个已配置</span></div><button type="button" class="sr-button quiet sr-back" data-action="back">${icon('arrow-left')}返回清单</button><div class="sr-split"><div class="sr-list">${renderList(false)}<div class="sr-summary"><span class="sr-state ok"><i class="sr-dot"></i>${t.ok} 条正常</span><span class="sr-state warn"><i class="sr-dot"></i>${t.missing} 条待创建</span><span class="sr-state error"><i class="sr-dot"></i>${t.conflict} 处冲突</span></div>${state.untracked.length?`<div class="sr-note">${state.untracked.length} 个 Skill 已从配置移除，其现有链接保留，后续可单独清理。</div>`:''}</div>${renderDetail(false)}</div>`}</section>`;
+      }
+      if(state.page==='registry')return header('全局管理 / 共享内容','中心仓库','一份内容，供所有项目与 Agent 使用。',btn(icon('refresh-cw')+' 检查更新','check-updates')+btn(icon('plus')+' 注册 Skill','register','primary'))+`<div class="sr-toolbar"><label class="sr-search">${icon('search')}<input data-role="search" aria-label="搜索中心仓库" placeholder="搜索中心仓库中的 Skill…" value="${esc(state.search)}"></label><select class="sr-select" data-role="filter" aria-label="Skill 来源"><option value="all" ${state.filter==='all'?'selected':''}>全部来源</option><option value="git" ${state.filter==='git'?'selected':''}>Git 仓库</option><option value="local" ${state.filter==='local'?'selected':''}>本地副本</option></select></div>${state.checked?notice('已检查 Git 示例源：frontend-design 有 2 个提交可更新。','ok'):''}<button type="button" class="sr-button quiet sr-back" data-action="back">${icon('arrow-left')}返回清单</button><div class="sr-split"><div class="sr-list">${renderList(true)}<div class="sr-note">中心位置 <span class="sr-path">${esc(state.center)}</span></div></div>${renderDetail(true)}</div>`;
+      if(state.page==='groups')return header('全局管理 / 共享集合','共享分组','把常用 Skills 组合起来，快速添加到项目。',btn(icon('plus')+' 新建分组','new-group','primary'))+notice('分组添加到项目时展开为 Skill 清单；之后改组不会自动改变项目。','ok')+`<div class="sr-group-grid">${state.groups.map((g,i)=>`<article class="sr-group"><div class="sr-group-icons">${icon('layers')}<span class="sr-badge">${g.skills.length} 个 Skill</span></div><h2>${esc(g.name)}</h2><p class="sr-sub">${esc(g.desc)}</p><div class="sr-members">${g.skills.map(s=>`<span>${esc(s)}</span>`).join('')}</div><div class="sr-actions" style="margin-top:13px">${btn('添加到工作区…','use-group','',`data-index="${i}"`)}${btn('编辑','edit-group','quiet',`data-index="${i}"`)}</div></article>`).join('')}</div>`;
+      if(state.page==='presets')return header('全局管理 / 共享模板','目标预设','定义 Agent 使用的目录；自动发现按路径首段识别。',btn(icon('rotate-ccw')+' 恢复缺失项','restore-presets')+btn(icon('plus')+' 新建预设','new-preset','primary'))+`<div class="sr-panel">${state.presets.map((p,i)=>`<div class="sr-target-card"><div class="sr-skill-mark">${icon('scan-line')}</div><div><span class="sr-name">${esc(p.id)} ${p.default?'<span class="sr-badge accent">默认回退</span>':''}</span><div class="sr-path" style="margin-top:4px">${esc(p.path)}</div></div><div class="sr-actions">${!p.default?btn('设为默认','default-preset','quiet',`data-index="${i}"`):''}${btn('编辑','edit-preset','',`data-index="${i}"`)}</div></div>`).join('')}</div><p class="sr-note">修改预设不会自动重写项目中的显式路径，也不会移动已有软链。</p>`;
+      return renderSettings();
+    }
+    function renderUninitialized(){return `<div class="sr-empty">${icon('folder-plus')}<h2>此工作区尚未初始化</h2><p class="sr-sub">创建 SkillRegistory 配置后，即可选择 Skills 并管理 Agent 目标。</p><div class="sr-path">${esc(workspaceConfig())}</div><div class="sr-actions">${btn(icon('plus')+' 初始化 SkillRegistory','initialize','primary')}${btn('选择其他工作区','switch-project','quiet')}</div></div>`;}
+    function renderEmptyWorkspace(){return `<div class="sr-empty"><span class="${state.justInitialized?'sr-init-success':''}">${icon(state.justInitialized?'circle-check':'package-plus')}</span><h2>${state.justInitialized?'工作区初始化完成':'项目还没有配置 Skill'}</h2><p class="sr-sub">${state.justInitialized?'配置已创建，接下来选择这个工作区需要的 Skills。':'从全局中心选择 Skills，添加到当前工作区。'}</p><div class="sr-actions">${btn(icon('plus')+' 添加第一个 Skill','add-project','primary')}${btn('查看初始配置','workspace-yaml')}</div></div>`;}
+    function settingRow({title,value,description='',actions=''}){return `<div class="sr-setting-row"><div class="sr-setting-copy"><h3>${esc(title)}</h3>${value?`<div class="sr-path">${esc(value)}</div>`:''}${description?`<p class="sr-sub">${esc(description)}</p>`:''}</div><div class="sr-actions">${actions}</div></div>`;}
+    function settingsGroup(title,rows){return rows.length?`<section class="sr-settings-group" aria-label="${esc(title)}"><h2>${esc(title)}</h2>${rows.map(settingRow).join('')}</section>`:'';}
+    function renderSettings(){
+      const local=scope()==='workspace';
+      const open=(label,key)=>btn(label,'settings-open','',`data-key="${key}"`);
+      const locations=local?[
+        {title:'工作区目录',value:state.projectPath,actions:open('打开目录','workspace-root')},
+        {title:'配置文件',value:workspaceConfig(),description:state.initialized?'':'尚未创建配置。',actions:state.initialized?open('打开文件','workspace-config'):btn('前往初始化','view-workspace')}
+      ]:[
+        {title:'中心目录',value:state.center,actions:open('打开目录','global-root')+btn('更改…','change-center')},
+        {title:'配置文件',value:'~/.skill-registry/global.yaml',actions:open('打开文件','global-config')}
+      ];
+      const maintenance=local?[
+        {title:'最近列表入口',value:state.hiddenWorkspaces.includes(state.projectPath)?'已移出':'已记录',description:'只移除快捷入口，当前工作区与文件保持可用。',actions:btn('移出列表','forget-project','',state.hiddenWorkspaces.includes(state.projectPath)?'disabled':'')},
+        ...(state.initialized?[{title:'工作区配置',value:'.skill-registry/config.yaml',description:'移入回收站后可重新初始化，已部署链接保留。',actions:btn('移除配置','remove-config','danger')}]:[])
+      ]:[];
+      return header(local?'当前工作区 / '+state.project:'全局管理 / 本机配置','设置',local?'管理当前工作区的位置与配置。':'管理本机共享的位置与配置。','')+settingsGroup('位置与配置',locations)+settingsGroup('维护操作',maintenance);
+    }
+    function renderList(registry){
+      const list=(registry?catalog():projectSkills()).filter(s=>(state.filter==='all'||!registry||s.type===state.filter)&&(s.id+' '+s.desc).toLowerCase().includes(state.search.toLowerCase()));
+      return `<div class="sr-list-head"><span>SKILL / 描述</span><span>${registry?'来源':'部署状态'}</span></div>${list.length?list.map(s=>{
+        const status=s.removed||s.links.includes('conflict')?'error':s.links.includes('missing')?'warn':'ok';const label=s.removed?'源缺失':status==='error'?'1 处冲突':status==='warn'?'1 条待创建':`${s.links.length}/${state.targets.length} 正常`;
+        return `<div class="sr-item ${state.selected===s.id?'selected':''}"><button type="button" class="sr-item-main" data-skill="${esc(s.id)}" aria-label="查看 ${esc(s.id)} 详情"><span class="sr-skill-mark">${icon('file-text')}</span><span class="sr-item-copy"><span class="sr-name">${esc(s.id)}</span><span class="sr-desc">${esc(s.desc)}</span></span></button>${registry?`<span class="sr-badge">${s.type==='git'?'Git':'本地副本'}</span>`:`<span class="sr-state ${status}"><i class="sr-dot"></i>${label}</span><button type="button" class="sr-row-more" aria-label="从项目配置移除 ${esc(s.id)}" data-action="remove-project" data-id="${esc(s.id)}">${icon('minus')}</button>`}</div>`;
+      }).join(''):`<div class="sr-empty">${icon(state.search?'search-x':'package-plus')}<h2>${state.search?'没有匹配的 Skill':registry?'中心仓库还没有 Skill':'项目还没有配置 Skill'}</h2><p class="sr-sub">${state.search?'尝试其他名称或来源。':'从中心选择已有 Skill，或先注册新的能力。'}</p>${state.search?btn('清除筛选','clear-search'):btn(registry?'注册 Skill':'从中心添加',registry?'register':'add-project','primary')}</div>`}`;
+    }
+    function renderDetail(registry){
+      const s=state.skills.find(s=>s.id===state.selected&&(registry?!s.removed:s.project))||(registry?catalog()[0]:projectSkills()[0]);if(!s)return '';
+      return `<aside class="sr-detail" aria-label="Skill 详情"><div class="sr-detail-top"><span class="sr-skill-mark">${icon('file-text')}</span><span class="sr-badge ${s.type==='git'?'accent':''}">${registry?(s.type==='git'?'Git 仓库':'本地副本'):'全局内容 · 只读'}</span></div><h2>${esc(s.id)}</h2><p class="sr-sub" style="font-size:11px;line-height:1.8">${esc(s.desc)}</p><div class="sr-detail-label">中心位置 · 全局共享</div><div class="sr-detail-path">${esc(state.center)}/${esc(s.id)}</div>${registry?`<div class="sr-detail-label">来源与版本</div><div class="sr-path">${s.type==='git'?`github.com/example/${esc(s.id)}<br>main · ${esc(s.commit)} · ${s.updated?'已更新':state.checked&&s.id==='frontend-design'?'有更新':state.checked?'已检查，无更新':'尚未检查新版本'}`:'本地复制导入 · 不跟随原目录更新'}</div><div class="sr-target-line"><span>已接入项目引用</span><span>${s.refs} 个</span></div><div class="sr-detail-label">SKILL.md</div><div class="sr-doc"><h3>${esc(s.id)}</h3><p>${esc(s.desc)}。按任务需要读取相关资源，并记录验证结果。</p><h3>使用流程</h3><ul><li>明确任务与约束</li><li>执行并检查结果</li></ul></div><div class="sr-detail-foot">${btn(s.type==='git'?icon('refresh-cw')+' 更新内容':'打开 SKILL.md',s.type==='git'?'update-skill':'open-file','',`data-id="${esc(s.id)}"`)}${btn(icon('folder-open')+' 打开','open-folder','quiet')}${btn('移除','remove-registry','danger',`data-id="${esc(s.id)}"`)}</div>${!s.project?`<div style="margin-top:8px">${btn('添加到工作区…','direct-add','primary',`data-id="${esc(s.id)}"`)}</div>`:''}`:`<div class="sr-detail-label">此 Skill 的 Agent 目标</div>${state.targets.map((t,i)=>`<div class="sr-target-line"><span>${esc(t.name)}</span><span class="sr-state ${s.links[i]==='ok'?'ok':s.links[i]==='conflict'?'error':'warn'}">${s.removed?'源缺失':s.links[i]==='ok'?'已链接':s.links[i]==='conflict'?'同名目录':'待创建'}</span></div>`).join('')}<div class="sr-note">此工作区只保存引用。进入全局中心修改内容，会影响其他工作区的有效链接。</div><div class="sr-detail-foot">${btn(icon('arrow-up-right')+' 进入全局中心','view-central')}${btn(icon('folder-open'),'open-folder','quiet','aria-label="打开 Skill 文件夹"')}</div>`}</aside>`;
+    }
+    function renderTargets(){
+      const skills=projectSkills();
+      return `<div class="sr-panel">${state.targets.map((t,i)=>{
+        const local=t.source==='项目配置';
+        const agentName=({'claude-code':'Claude Code',codex:'Codex',cursor:'Cursor','agent-generic':'Generic Agent'})[t.id]||t.name||t.id;
+        const linked=skills.filter(s=>!s.removed&&s.links[i]==='ok').length;
+        const pending=skills.filter(s=>!s.removed&&(!s.links[i]||s.links[i]==='missing')).length;
+        const conflicts=skills.filter(s=>!s.removed&&s.links[i]==='conflict').length;
+        const missing=skills.filter(s=>s.removed).length;
+        return `<div class="sr-target-card"><div class="sr-skill-mark">${icon(t.id==='codex'?'terminal':'bot')}</div><div><span class="sr-name">${esc(agentName)} <span class="sr-badge ${local?'':'accent'}">${local?'工作区显式配置':'全局预设引用'}</span></span><div class="sr-target-path"><div class="sr-path">${esc(t.id)} · ${esc(targetDirectory(t))}</div>${btn(icon('folder-open')+' 选择目录…','choose-target-directory','quiet',`data-index="${i}" aria-label="选择 ${esc(agentName)} 的目标目录"`)}</div><div class="sr-agent-meta">${skills.length?`<span class="sr-sub">${skills.length} 个 Skill</span><span class="sr-state ok">${linked} 已链接</span>${pending?`<span class="sr-state warn">${pending} 待创建</span>`:''}${conflicts?`<span class="sr-state error">${conflicts} 处冲突</span>`:''}${missing?`<span class="sr-state error">${missing} 个源缺失</span>`:''}`:'<span class="sr-sub">等待添加第一个 Skill</span>'}</div><p class="sr-note">${local?'当前工作区配置；编辑仅影响此工作区。':'来源：目标预设 / '+esc(t.id)+' · '+esc(t.source)+'；可在此工作区单独覆盖。'}</p></div><div class="sr-actions">${btn(local?'编辑目标':'覆盖此工作区','edit-target','',`data-index="${i}"`)}${!local?btn('查看目标预设','view-preset','quiet'):''}</div></div>`;
+      }).join('')}</div><p class="sr-note">这里展示此工作区当前生效的 Agent 目标：显式配置与自动发现取并集，皆为空时使用默认目标。所有目标使用同一份工作区 Skill 清单。</p>`;
+    }
+    function renderYaml(){return `${notice(state.dirty?'草稿有未保存修改；应用操作使用已保存配置。':'项目配置已保存。编辑后先校验，再查看差异并保存。',state.dirty?'warn':'ok')}<textarea class="sr-code" data-role="yaml" aria-label="项目 YAML 配置" spellcheck="false">${esc(state.yamlDraft??yamlText())}</textarea><div class="sr-form-row"><span class="sr-sub" data-role="yaml-status">${state.dirty?'未保存':'YAML 配置 · 与表单共享'}</span><span style="flex:1"></span>${btn('放弃修改','discard-yaml')}${btn('查看差异并保存','save-yaml','primary')}</div>`;}
+    function openModal(type,data={}){lastFocus=document.activeElement;state.modal={type,...data};render();const modal=el.querySelector('.sr-modal');const focus=modal?.querySelector('[data-initial-focus],input:not([type="checkbox"]),textarea,button');focus?.focus();}
+    function closeModal(){if(state.modal?.busy)return;if(state.modal?.type==='folder-picker'&&!state.modal.cancelToPanel){const returnTo=state.modal.returnTo||{};return openModal(returnTo.type||'switch-project',returnTo);}state.modal=null;render();const action=lastFocus?.dataset?.action;const target=(action?el.querySelector(`[data-action="${action}"]`):null)||el.querySelector('[data-action="switch-project"]')||el.querySelector('[data-action="register"]')||el.querySelector('[data-action="scope-workspace"]');target?.focus();}
+    function toast(msg){state.toast=msg;render();clearTimeout(toastTimer);toastTimer=setTimeout(()=>{state.toast='';render();},3000);}
+    function modalShell(title,sub,body,footer){const workspaceTypes=['initialize','preview','add-project','remove-project','target','use-group','choose-group','add-to-workspace','switch-project','remove-config','forget-project','yaml-diff','external'];const globalTypes=['register','remove-registry','update','preset','group','center','center-confirm'];const targetScope=state.modal?.scope||(workspaceTypes.includes(state.modal?.type)?'workspace':globalTypes.includes(state.modal?.type)?'global':scope());return `<div class="sr-modal-layer"><section class="sr-modal" role="dialog" aria-modal="true" aria-busy="${!!state.modal?.busy}" aria-label="${esc(title)}"><div class="sr-modal-scope">${icon(targetScope==='global'?'globe':'folder-cog')}${targetScope==='global'?'全局范围 · 本机所有工作区共享':'工作区范围 · '+esc(state.project)}</div><div class="sr-modal-head"><div><h2>${esc(title)}</h2><p class="sr-sub">${esc(sub||'')}</p></div><button type="button" class="sr-row-more" data-action="close-modal" aria-label="关闭弹层" ${state.modal?.busy?'disabled':''}>${icon('x')}</button></div><div class="sr-modal-body" data-modal-type="${esc(state.modal?.type||'')}">${body}</div><div class="sr-modal-foot">${footer}</div></section></div>`;}
+    function reviewSettingChange({title,location,before,after,impact,action,label,danger=false,validation=''}){return modalShell('预览变更',title,`${[['作用位置',location],['变更前',before],['变更后',after]].map(([label,value])=>`<div class="sr-change-row"><span class="sr-sub">${label}</span><div class="sr-path">${esc(value)}</div></div>`).join('')}${validation?`<p class="sr-note">${esc(validation)}</p>`:''}<div style="margin-top:14px">${notice(esc(impact),'warn')}</div>`,btn('取消','close-modal')+btn(label,action,danger?'danger':'primary'));}
+    function renderModal(){
+      const m=state.modal,t=totals(),cancel=btn('取消','close-modal');
+      if(m.type==='initialize')return modalShell('初始化 SkillRegistory',state.project,`<div class="sr-detail-label">将创建配置文件</div><div class="sr-detail-path">${esc(workspaceConfig())}</div><div class="sr-detail-label">初始内容</div><pre class="sr-init-code">skills: []</pre><p class="sr-note">创建一个空清单，随后再选择 Skills。初始化不会创建部署链接。</p>${m.error?notice(m.error,'error'):''}${m.busy?`<div class="sr-init-progress" role="status">${icon('loader-circle')}正在创建配置…</div>`:''}`,btn('取消','close-modal','',m.busy?'disabled':'')+btn(m.busy?'正在创建…':m.error?'重试创建':'创建配置','commit-initialize','primary',m.busy?'disabled':''));
+      if(m.type==='preview')return modalShell('应用到 '+state.project,'只创建缺失链接；同名实体目录与外部链接会保留。',`<div class="sr-mini-stats"><div><strong>${t.missing}</strong><small>待创建</small></div><div><strong>${t.ok}</strong><small>已正确链接</small></div><div><strong style="color:var(--s-red)">${t.conflict}</strong><small>冲突 · 默认跳过</small></div></div>${projectSkills().flatMap(s=>s.links.map((v,i)=>({s,v,i}))).filter(x=>x.v!=='ok').map(({s,v,i})=>`<div class="sr-plan-row ${v==='conflict'?'is-conflict':''}">${icon(v==='missing'?'link':'triangle-alert')}<div><span>${esc(s.id)} → ${esc(state.targets[i]?.name||'Target')}</span><div class="sr-path">${esc(pathFor(s.id,state.targets[i]||{path:''}))}</div>${v==='conflict'?`<div class="sr-note" style="color:var(--s-red);margin-top:4px">${s.removed?'中心源缺失，保留已有路径并跳过':'已有路径与期望中心不一致，保留并跳过'}</div>`:''}</div><span class="sr-badge">${v==='missing'?'创建链接':'跳过'}</span></div>`).join('')}${!t.missing&&!t.conflict?notice('所有期望链接均已正常，无需执行。','ok'):''}`,cancel+btn(`创建 ${t.missing} 个链接${t.conflict?' · 跳过 '+t.conflict+' 处冲突':''}`,'apply','primary',t.missing?'':'disabled'));
+      if(m.type==='add-project')return modalShell('引用全局中心的 Skill','仅将所选引用写入 '+state.project+' 的配置；不修改全局内容。',`${catalog().map(s=>`<label class="sr-choice"><input type="checkbox" data-pick="${esc(s.id)}" ${s.project?'checked disabled':''}><span>${esc(s.id)}<small>${s.project?'已在此工作区中':esc(s.desc)}</small></span></label>`).join('')}<div class="sr-note">资源来源：全局中心 · 只读选择。${btn('从共享分组选择','go-groups','quiet')}</div>`,cancel+btn('保存到 '+esc(state.project),'commit-add','primary'));
+      if(m.type==='choose-group')return modalShell('选择共享分组','读取全局分组，将成员添加到 '+state.project+'。',state.groups.map((g,i)=>`<div class="sr-target-line"><div><span>${esc(g.name)}</span><div class="sr-sub">${g.skills.length} 个 Skill · 全局共享</div></div>${btn('预览添加','use-group','',`data-index="${i}"`)}</div>`).join(''),cancel);
+      if(m.type==='add-to-workspace'){const s=state.skills.find(s=>s.id===m.id);return modalShell('将 Skill 添加到工作区','本次写入工作区配置，全局内容保持原状。',`<div class="sr-scope-transfer"><div><small>读取 · 全局中心</small><span>${esc(s.id)}</span><div class="sr-path">${esc(state.center)}/${esc(s.id)}</div></div><div><small>写入 · 目标工作区</small><span>${esc(state.project)}</span><div class="sr-path">${esc(workspaceConfig())}</div></div></div><p class="sr-note">只新增 Skill 引用。保存后仍需在该工作区应用链接。</p>`,cancel+btn('添加到 '+esc(state.project),'commit-direct-add','primary'));}
+      if(m.type==='remove-project')return modalShell('从项目配置移除',m.id,notice('只从项目清单移除。已经创建的软链保留，Agent 可能仍能读取这个 Skill。','warn')+`<div class="sr-path">${esc(workspaceConfig())}</div>`,cancel+btn('移除配置引用','commit-remove-project','danger'));
+      if(m.type==='register'){
+        const local=m.source==='local';
+        return modalShell('注册到中心仓库','导入成功后，可添加到任意已接入项目。',`<div class="sr-tabs"><button type="button" class="sr-tab ${!local?'active':''}" data-action="register-git">${icon('git-branch')} Git 仓库</button><button type="button" class="sr-tab ${local?'active':''}" data-action="register-local">${icon('folder')} 本地目录</button></div><label class="sr-field">${local?'本地 Skill 目录':'Git 仓库 URL'}<input data-role="source" placeholder="${local?'~/Downloads/my-skill':'https://github.com/example/my-skill.git'}" value="${esc(m.sourceValue||'')}"></label><label class="sr-field">注册名<input data-role="register-name" placeholder="例如 my-skill" value="${esc(m.name||'')}"></label>${notice(local?'复制导入到中心；原目录后续改动不会自动同步。':'首期支持含 SKILL.md 的完整根仓库；子目录可追踪导入安排在后续版本。',local?'warn':'ok')}<div class="sr-detail-label">保存到</div><div class="sr-detail-path">${esc(state.center)}/&lt;注册名&gt;</div><div data-role="form-error" role="alert" class="sr-note" style="color:var(--s-red)"></div>`,cancel+btn(local?'校验并复制导入':'校验并导入仓库','commit-register','primary'));
+      }
+      if(m.type==='remove-registry'){
+        const s=state.skills.find(s=>s.id===m.id);if(!s)return '';
+        const groupRefs=state.groups.filter(g=>g.skills.includes(s.id)).length;
+        return modalShell('从中心仓库移除',s.id,notice(`${s.refs} 个已接入项目、${groupRefs} 个分组引用此 Skill。中心内容移走后，相关软链会失效。配置与分组引用仍保留。`,s.refs?'error':'warn')+`<p class="sr-sub">引用检查仅覆盖已接入且可访问的项目。继续操作会将中心内容移入回收站。</p><div class="sr-detail-path" style="margin-top:12px">${esc(state.center)}/${esc(s.id)}</div>${s.refs?'<label class="sr-choice"><input type="checkbox" data-role="force-remove"><span>我了解引用仍会保留，并接受断链影响</span></label>':''}<label class="sr-field">输入注册名 ${esc(s.id)} 确认<input data-role="confirm-name" autocomplete="off"></label><div data-role="form-error" role="alert" class="sr-note" style="color:var(--s-red)"></div>`,cancel+btn('移入回收站','commit-remove-registry','danger'));
+      }
+      if(m.type==='update'){
+        const s=state.skills.find(s=>s.id===m.id);return modalShell('更新全局 Skill 内容',s?.id||'',notice(`已知 ${s?.refs||0} 个工作区引用此内容，更新后相关有效链接将直接读取新版本。`,'warn')+`<div class="sr-detail-label">共享内容位置</div><div class="sr-detail-path">${esc(state.center)}/${esc(s?.id||'')}</div><div class="sr-detail-label">当前版本</div><div class="sr-path">main · ${esc(s?.commit||'')}</div><div class="sr-note">演示检查结果：Git 工作目录干净，远端可访问，可安全快进。</div>`,cancel+btn('检查并更新全局内容','commit-update','primary'));
+      }
+      if(m.type==='target'||m.type==='preset'){
+        const isPreset=m.type==='preset',item=isPreset?state.presets[m.index]:state.targets[m.index];
+        return modalShell(item?'编辑'+(isPreset?'目标预设':' Agent 目标'):'添加'+(isPreset?'目标预设':' Agent 目标'),isPreset?'写入全局 global.yaml；引用此模板的工作区会使用新值，显式路径不变。':'仅写入 '+state.project+' 的 config.yaml，不修改全局模板。',`<label class="sr-field">Agent 标识<input data-role="target-id" value="${esc(m.idDraft??item?.id??'')}" placeholder="例如 agent-generic" ${item?'readonly':''}></label><div class="sr-field"><label for="${el.id}-target-path">部署路径</label><div class="sr-path-input"><input id="${el.id}-target-path" data-role="target-path" value="${esc(m.pathDraft??item?.path??'')}" placeholder="例如 .agents/skills">${!isPreset?btn(icon('folder-open')+' 选择文件夹…','browse-target'):''}</div></div><p class="sr-note">${isPreset?'相对路径基于项目根目录解析；~/ 与绝对路径影响项目外位置。':'选择此 Agent 存放 Skills 的目录。工作区内保存为相对路径；保存后再应用链接，已有链接保留。'}</p><div class="sr-detail-path">${esc(isPreset?'~/.skill-registry/global.yaml':workspaceConfig())}</div><div data-role="form-error" role="alert" class="sr-note" style="color:var(--s-red)"></div>`,`${item?btn('移除'+(isPreset?'全局预设':'工作区显式配置'),'delete-target','danger'):''}${cancel}${btn(isPreset?'保存预设':'保存目标','commit-target','primary')}`);
+      }
+      if(m.type==='group'){
+        const g=state.groups[m.index];return modalShell(g?'编辑分组':'新建分组','成员变化不会自动改动已使用此分组的项目。',`<label class="sr-field">分组名称<input data-role="group-name" value="${esc(g?.name||'')}" placeholder="例如 daily"></label><label class="sr-field">描述<input data-role="group-desc" value="${esc(g?.desc||'')}"></label>${catalog().map(s=>`<label class="sr-choice"><input type="checkbox" data-member="${esc(s.id)}" ${g?.skills.includes(s.id)?'checked':''}><span>${esc(s.id)}</span></label>`).join('')}<div data-role="form-error" role="alert" class="sr-note" style="color:var(--s-red)"></div>`,`${g?btn('删除分组','delete-group','danger'):''}${cancel}${btn('保存分组','commit-group','primary')}`);
+      }
+      if(m.type==='use-group'){
+        const g=state.groups[m.index],added=g.skills.filter(id=>!state.skills.find(s=>s.id===id)?.project);
+        return modalShell('从共享分组添加到工作区',g.name+' → '+state.project,notice(`分组 ${g.skills.length} 个 Skill；新增 ${added.length} 个，已存在 ${g.skills.length-added.length} 个。`,'ok')+`<div class="sr-members">${g.skills.map(s=>`<span>${esc(s)}</span>`).join('')}</div><div class="sr-detail-label">写入 · 目标工作区</div><div class="sr-detail-path">${esc(workspaceConfig())}</div><p class="sr-note">本次只写入工作区引用，不修改全局分组，也不建立持续关联。</p>`,cancel+btn(`添加 ${added.length} 个到 ${esc(state.project)}`,'commit-use-group','primary'));
+      }
+      if(m.type==='switch-project'){
+        const recent=Object.entries(state.workspaceRecords).filter(([projectPath])=>!state.hiddenWorkspaces.includes(projectPath));
+        return modalShell('切换工作区','选择最近工作区，或通过系统窗口选择其他文件夹。',`<h3>最近工作区</h3>${recent.length?recent.map(([projectPath,record])=>`<button type="button" class="sr-workspace-option" data-action="choose-workspace" data-path="${esc(projectPath)}">${icon('folder')}<span><span class="sr-name">${esc(record.name)}</span><span class="sr-path">${esc(projectPath)}</span></span><span class="sr-badge ${record.initialized?'connected':''}">${projectPath===state.projectPath?'当前 · ':''}${record.initialized?'已初始化':'未初始化'}</span></button>`).join(''):'<p class="sr-sub">暂无最近工作区</p>'}<div class="sr-folder-choice">${btn(icon('folder-open')+' 选择文件夹…','browse-project','primary')}${btn(m.manual?'收起路径输入':'手动输入路径','manual-project','quiet',`aria-expanded="${!!m.manual}" aria-controls="${el.id}-manual-path"`)}</div>${m.manual?`<label class="sr-field" id="${el.id}-manual-path">工作区文件夹路径<input data-role="project-path" placeholder="~/Projects/another-project" value="${esc(m.manualPath||'')}"></label>`:''}<div data-role="form-error" role="alert" class="sr-note" style="color:var(--s-red)"></div>`,btn('取消','close-modal')+(m.manual?btn('切换到此路径','commit-project','primary'):''));
+      }
+      if(m.type==='folder-picker')return modalShell(m.pickerTitle||'选择工作区文件夹','系统目录选择窗口 · 交互示意',`<div class="sr-folder-location">${icon('folder')}<span class="sr-path">${esc(m.parentPath)}</span></div>${m.folders.map(projectPath=>`<button type="button" class="sr-workspace-option" aria-pressed="${m.selectedPath===projectPath}" data-action="select-folder-row" data-path="${esc(projectPath)}">${icon('folder')}<span><span class="sr-name">${esc(m.selectorTarget==='agent-target'?targetConfigPath(projectPath):projectPath.split('/').pop()||projectPath)}</span><span class="sr-path">${esc(projectPath)}</span></span></button>`).join('')}`,btn('取消','close-modal')+btn('选择此文件夹','confirm-folder-picker','primary',m.selectedPath?'':'disabled'));
+      if(m.type==='remove-config')return reviewSettingChange({title:'移除工作区配置',location:workspaceConfig(),before:'已初始化',after:'配置移入回收站，恢复未初始化状态',impact:'当前工作区文件和已部署链接保留。',action:'commit-remove-config',label:'移入回收站',danger:true});
+      if(m.type==='forget-project')return reviewSettingChange({title:'移出最近工作区列表',location:state.projectPath,before:'已记录在最近列表',after:'从最近列表移出',impact:'当前工作区继续打开，配置、文件及现有链接保留。再次选择此文件夹即可重新加入。',action:'commit-forget-project',label:'确认移出'});
+      if(m.type==='center')return modalShell('更改中心目录','选择或填写新目录，再预览变更。',`<label class="sr-field">中心目录路径<input data-role="center-path" value="${esc(m.path||state.center)}"></label><div class="sr-actions">${btn(icon('folder-open')+' 选择文件夹…','browse-center')}</div><div data-role="form-error" role="alert" class="sr-note" style="color:var(--s-red)"></div>`,cancel+btn('预览变更','check-center','primary'));
+      if(m.type==='center-confirm')return reviewSettingChange({title:'更改中心目录',location:'~/.skill-registry/global.yaml → registry.path',before:state.center,after:m.path,impact:'所有工作区将使用新中心。旧内容与已有软链保留原位置，迁移和重连需另行处理。',validation:'示例校验通过：目录可读，发现 8 个 Skill。',action:'commit-center',label:'保存路径'});
+      if(m.type==='yaml-diff')return modalShell('保存项目配置','保存后再单独应用链接。',`<div class="sr-detail-label">变更预览 · − 移除 / + 新增</div><pre class="sr-code" style="min-height:0;max-width:100%">${esc(m.diff||m.text)}</pre><p class="sr-note">本稿演示简化 YAML 结构；实施时需校验完整 schema，并保留未知字段。</p>`,cancel+btn('确认保存','commit-yaml','primary'));
+      if(m.type==='external')return modalShell('检测到外部配置变更','先比较版本，再处理本地草稿。',notice('磁盘文件已更新，当前草稿不会覆盖外部版本。','warn')+`<div class="sr-detail-label">外部版本变化</div><div class="sr-detail-path">+ skills: api-review</div><div class="sr-detail-label">当前草稿变化</div><div class="sr-detail-path">保留当前界面中的修改，尚未写入。</div>`,btn('继续编辑草稿','close-modal')+btn('载入外部版本','reload-external','primary'));
+      return modalShell(m.title||'打开本机文件',m.sub||'',`<div class="sr-detail-path">${esc(m.path||state.center+'/'+state.selected)}</div><p class="sr-note">实际插件会调用系统默认程序打开此位置。设计稿仅展示目标路径。</p>`,btn('关闭','close-modal','primary'));
+    }
+    const error=msg=>{const field=el.querySelector('[data-role="form-error"]');if(field)field.textContent=msg;};
+    const value=role=>el.querySelector(`[data-role="${role}"]`)?.value.trim()||'';
+    function navigate(page){if(state.dirty&&page!==state.page)return openModal('message',{title:'工作区配置尚未保存',sub:'保存或放弃项目 YAML 草稿后，再切换作用域或页面。',path:workspaceConfig()});if(scope()==='global')state.lastGlobalPage=state.page;else state.lastWorkspacePage=state.page;state.page=page;state.search='';state.filter='all';state.detail=false;state.modal=null;render();persist(state);}
+    function action(a,target){
+      const m=state.modal;
+      if(a==='scope-workspace')return navigate(state.lastWorkspacePage);
+      if(a==='scope-global')return navigate(state.lastGlobalPage);
+      if(a==='view-workspace'){state.tab='skills';return navigate('project');}
+      if(a==='view-preset')return navigate('presets');
+      if(a==='settings-open'){const locations={'workspace-root':{title:'打开工作区目录',scope:'workspace',path:state.projectPath},'workspace-config':{title:'打开工作区配置文件',scope:'workspace',path:workspaceConfig()},'global-root':{title:'打开中心目录',scope:'global',path:state.center},'global-config':{title:'打开全局配置文件',scope:'global',path:'~/.skill-registry/global.yaml'}};if(locations[target.dataset.key])return openModal('message',locations[target.dataset.key]);return;}
+      if(a==='initialize')return openModal('initialize');
+      if(a==='commit-initialize'){
+        if(m?.busy)return;
+        if(state.initialized)return openModal('message',{title:'此工作区已经初始化',sub:'已有配置将保留，可继续在 Skills 页管理引用。',scope:'workspace',path:workspaceConfig()});
+        state.modal={...m,busy:true,error:''};state.initializationStatus='creating';render();
+        setTimeout(()=>{
+          if(shared.initOutcome==='首次失败'&&!state.initFailedOnce){state.initFailedOnce=true;state.initializationStatus='failed';state.modal={...m,busy:false,error:'配置创建失败：当前文件夹不可写。请检查权限后重试。'};render();return;}
+          state.initialized=true;state.justInitialized=true;state.initializationStatus='idle';state.targets=defaultTargets();state.yamlDraft=null;state.dirty=false;state.untracked=[];state.modal=null;shared.scenario='标准项目';snapshotWorkspace();
+          if(m?.afterInit)openModal(m.afterInit.type,m.afterInit);else render();persist(state);
+        },450);
+        return;
+      }
+      if(a==='choose-workspace')return selectWorkspace(target.dataset.path);
+      if(a==='manual-project'){const manualPath=value('project-path')||m.manualPath||'';state.modal={...m,manual:!m.manual,manualPath};render();if(state.modal.manual)el.querySelector('[data-role="project-path"]')?.focus();return;}
+      if(a==='browse-project'){const parentPath=state.projectPath.slice(0,state.projectPath.lastIndexOf('/'))||'/';const folders=Object.keys(state.workspaceRecords).filter(projectPath=>projectPath.slice(0,projectPath.lastIndexOf('/'))===parentPath);if(!folders.length)folders.push(state.projectPath);return openModal('folder-picker',{scope:'workspace',parentPath,folders,selectedPath:folders.includes(state.projectPath)?state.projectPath:folders[0],returnTo:{manual:!!m.manual,manualPath:value('project-path')||m.manualPath||''}});}
+      if(a==='browse-center'){const path=value('center-path')||m.path||state.center;const parentPath=path.slice(0,path.lastIndexOf('/'))||'/';const alternate=parentPath.replace(/\/$/,'')+'/shared-skills';return openModal('folder-picker',{scope:'global',pickerTitle:'选择中心目录',selectorTarget:'center',parentPath,folders:[...new Set([path,alternate])],selectedPath:path,returnTo:{type:'center',path}});}
+      if(a==='choose-target-directory'){const index=Number(target.dataset.index),item=state.targets[index];if(item)return chooseTargetDirectory({index,idDraft:item.id,pathDraft:item.path},true);return;}
+      if(a==='browse-target')return chooseTargetDirectory({...m,idDraft:value('target-id'),pathDraft:value('target-path')});
+      if(a==='select-folder-row'){state.modal={...m,selectedPath:target.dataset.path};return render();}
+      if(a==='confirm-folder-picker'&&m.selectedPath){if(m.selectorTarget==='agent-target')return openModal('target',{...m.returnTo,pathDraft:targetConfigPath(m.selectedPath)});return m.selectorTarget==='center'?openModal('center',{path:m.selectedPath}):selectWorkspace(m.selectedPath);}
+      if(!state.initialized&&a==='direct-add')return openModal('initialize',{afterInit:{type:'add-to-workspace',id:target.dataset.id},scope:'workspace'});
+      if(!state.initialized&&a==='use-group')return openModal('initialize',{afterInit:{type:'use-group',index:Number(target.dataset.index)},scope:'workspace'});
+      if(!state.initialized&&['add-project','new-target','preview','workspace-yaml'].includes(a))return openModal('initialize',{afterInit:a==='add-project'?{type:'add-project'}:null,scope:'workspace'});
+      if(a==='workspace-yaml'){state.tab='yaml';return navigate('project');}
+      if(['preview','add-project','register','switch-project'].includes(a)){if(state.dirty){openModal('message',{title:'先处理未保存的修改',sub:'保存或放弃 YAML 草稿后，再继续此操作。',path:'项目配置 / YAML'});return;}return openModal(a,a==='register'?{source:'git'}:{});}
+      if(a==='close-modal')return closeModal();
+      if(a==='back'){state.detail=false;return render();}
+      if(a==='normal'){shared.scenario='标准项目';return render();}
+      if(a==='clear-search'){state.search='';state.filter='all';return render();}
+      if(a==='apply'){
+        const count=totals().missing;projectSkills().forEach(s=>s.links=s.links.map(v=>v==='missing'?'ok':v));state.applied=true;state.modal=null;return toast(`已创建 ${count} 条链接，${totals().conflict} 处冲突仍需处理`);
+      }
+      if(a==='commit-add'){
+        const ids=[...el.querySelectorAll('[data-pick]:checked:not(:disabled)')].map(n=>n.dataset.pick);ids.forEach(id=>{const s=state.skills.find(s=>s.id===id);s.project=true;s.refs++;s.links=state.targets.map(()=> 'missing');});state.modal=null;state.page='project';state.tab='skills';state.search='';state.filter='all';return toast(`配置已保存，新增 ${ids.length} 个 Skill`);
+      }
+      if(a==='remove-project')return openModal('remove-project',{id:target.dataset.id});
+      if(a==='commit-remove-project'){const s=state.skills.find(s=>s.id===m.id);s.project=false;s.refs=Math.max(0,s.refs-1);state.untracked.push(s.id);state.selected=projectSkills()[0]?.id||state.skills[0]?.id;state.modal=null;return toast('已移除配置引用，现有链接保留');}
+      if(a==='go-groups')return openModal('choose-group');
+      if(a==='view-central'){if(state.dirty)return navigate('registry');navigate('registry');state.detail=true;return render();}
+      if(a==='open-folder'||a==='open-file'){const workspaceFile=state.page==='project'&&a==='open-file';return openModal('message',{title:a==='open-file'?'打开配置或 Skill 文件':'在文件管理器中打开',scope:workspaceFile?'workspace':'global',path:state.page==='settings'?'~/.skill-registry/global.yaml':workspaceFile?workspaceConfig():state.center+'/'+state.selected+(a==='open-file'?'/SKILL.md':'')});}
+      if(a==='register-git'||a==='register-local'){const name=value('register-name'),sourceValue=value('source');state.modal={type:'register',source:a==='register-local'?'local':'git',name,sourceValue};return render();}
+      if(a==='commit-register'){
+        const name=value('register-name'),source=value('source');if(!name||!/^[a-zA-Z0-9_-]+$/.test(name))return error('注册名使用字母、数字、短横线或下划线，不得包含路径。');if(state.skills.some(s=>s.id===name))return error('此注册名已存在，请使用其他名称。');if(!source)return error('请填写来源路径或仓库 URL。');if(m.source==='git'&&source.includes('#'))return error('首期暂不支持 Git 子目录可追踪导入。可先通过本地复制导入。');if(m.source==='git'&&!/^(https:\/\/|git@|git\+https:\/\/)/.test(source))return error('请填写 HTTPS 或 SSH Git 仓库地址。');
+        state.skills.push({id:name,desc:'新导入的 Skill',type:m.source==='local'?'local':'git',project:false,links:[],refs:0,commit:'d710b2f'});state.selected=name;state.modal=null;state.page='registry';state.search='';state.filter='all';state.detail=true;return toast('示例 Skill 已导入中心，可添加到项目');
+      }
+      if(a==='check-updates'){state.checked=true;return toast('Git 示例源检查完成：1 个 Skill 可更新');}
+      if(a==='update-skill')return openModal('update',{id:target.dataset.id});
+      if(a==='commit-update'){const s=state.skills.find(s=>s.id===m.id);s.commit='e52a7b3';s.updated=true;state.modal=null;return toast('中心内容已更新，已有软链直接生效');}
+      if(a==='remove-registry')return openModal('remove-registry',{id:target.dataset.id});
+      if(a==='commit-remove-registry'){const s=state.skills.find(s=>s.id===m.id);if(value('confirm-name')!==s.id)return error('输入的注册名不匹配。');if(s.refs&&!el.querySelector('[data-role="force-remove"]')?.checked)return error('此 Skill 仍有项目引用，请先确认断链影响。');s.removed=true;s.links=s.links.map(()=> 'conflict');state.selected=catalog()[0]?.id;state.modal=null;return toast('中心内容已移入回收站（演示）');}
+      if(a==='direct-add')return openModal('add-to-workspace',{id:target.dataset.id});
+      if(a==='commit-direct-add'){const s=state.skills.find(s=>s.id===m.id);s.project=true;s.refs++;s.links=state.targets.map(()=> 'missing');state.modal=null;return toast('已保存到工作区 '+state.project+'；全局内容未修改');}
+      if(a==='edit-target'||a==='new-target')return openModal('target',{index:a==='new-target'?-1:Number(target.dataset.index)});
+      if(a==='edit-preset'||a==='new-preset')return openModal('preset',{index:a==='new-preset'?-1:Number(target.dataset.index)});
+      if(a==='commit-target'){
+        const id=value('target-id'),path=value('target-path'),isPreset=m.type==='preset',list=isPreset?state.presets:state.targets;if(!id||!/^[a-zA-Z0-9_-]+$/.test(id)||!path)return error('请填写合法标识和部署路径。');if(m.index<0&&list.some(t=>t.id===id))return error('Agent 标识已存在。');if(path==='/'||path==='~/'||path==='..'||path.includes('../'))return error('目标过于宽泛或包含上级跳转，请指定 Agent 的专用目录。');
+        const priorPath=list[m.index]?.path;const item={...(list[m.index]||{}),id,path,...(!isPreset?{name:id==='codex'?'Codex':id==='claude-code'?'Claude Code':id,source:'项目配置'}:{})};if(m.index<0)list.push(item);else list[m.index]=item;
+        if(!isPreset)projectSkills().forEach(s=>{if(m.index<0)s.links.push('missing');else if(priorPath!==path)s.links[m.index]='missing';});
+        if(isPreset)state.targets.forEach((t,i)=>{if(t.id===id&&t.source!=='项目配置'&&t.path!==path){t.path=path;projectSkills().forEach(s=>s.links[i]='missing');}});
+        state.modal=null;return toast(isPreset?'全局预设已保存；工作区显式路径不变':'工作区配置已保存；全局模板不变，已有链接未移动');
+      }
+      if(a==='delete-target'){
+        const isPreset=m.type==='preset',list=isPreset?state.presets:state.targets,item=list[m.index];if(isPreset&&item.default)return error('请先选择其他默认 Target，再移除此预设。');
+        if(!isPreset&&item.id==='codex'){item.source='自动发现';state.modal=null;return toast('显式配置已移除；Codex 仍由自动发现生效');}
+        list.splice(m.index,1);if(!isPreset)projectSkills().forEach(s=>s.links.splice(m.index,1));state.modal=null;return toast(isPreset?'预设已移除':'显式配置已移除，已有链接保留');
+      }
+      if(a==='default-preset'){state.presets.forEach((p,i)=>p.default=i===Number(target.dataset.index));return toast('全局默认 Target 已保存');}
+      if(a==='restore-presets'){const preset={id:'qoder',path:'.qoder/skills'};if(!state.presets.some(p=>p.id===preset.id))state.presets.push(preset);return toast('缺失预设已恢复（示例：qoder）');}
+      if(a==='new-group'||a==='edit-group')return openModal('group',{index:a==='new-group'?-1:Number(target.dataset.index)});
+      if(a==='commit-group'){const name=value('group-name'),desc=value('group-desc'),skills=[...el.querySelectorAll('[data-member]:checked')].map(n=>n.dataset.member);if(!name||!/^[a-zA-Z0-9_-]+$/.test(name))return error('请使用字母、数字、短横线或下划线命名。');if(state.groups.some((g,i)=>g.name===name&&i!==m.index))return error('分组名称已存在。');const g={name,desc,skills};if(m.index<0)state.groups.push(g);else state.groups[m.index]=g;state.modal=null;return toast('分组已保存，项目清单保持原状');}
+      if(a==='delete-group'){state.groups.splice(m.index,1);state.modal=null;return toast('分组已删除，已展开的项目 Skills 保留');}
+      if(a==='use-group')return openModal('use-group',{index:Number(target.dataset.index)});
+      if(a==='commit-use-group'){let n=0;state.groups[m.index].skills.forEach(id=>{const s=state.skills.find(s=>s.id===id);if(s&&!s.removed&&!s.project){s.project=true;s.refs++;s.links=state.targets.map(()=> 'missing');n++;}});state.modal=null;return toast(`已保存 ${n} 个新增引用，不建立持续分组关联`);}
+      if(a==='commit-project'){const projectPath=value('project-path');if(!projectPath)return error('请选择工作区文件夹。');if(!/^(~\/|\/|[a-zA-Z]:[\\/])/.test(projectPath))return error('请填写绝对路径或 ~/ 开头的文件夹路径。');return selectWorkspace(projectPath);}
+      if(a==='remove-config'||a==='forget-project')return openModal(a);
+      if(a==='commit-remove-config'){state.modal=null;state.initialized=false;state.justInitialized=false;state.page='workspace-settings';state.lastWorkspacePage='workspace-settings';state.skills.forEach(s=>{s.project=false;});state.targets=[];snapshotWorkspace();return toast('项目配置已移入回收站（演示），链接保留');}
+      if(a==='commit-forget-project'){snapshotWorkspace();if(!state.hiddenWorkspaces.includes(state.projectPath))state.hiddenWorkspaces.push(state.projectPath);state.modal=null;return toast('已移出最近列表，当前工作区与项目文件保留');}
+      if(a==='change-center')return openModal('center');
+      if(a==='check-center'){const path=value('center-path');if(!path)return error('请填写中心目录。');return openModal('center-confirm',{path});}
+      if(a==='commit-center'){state.center=m.path;state.modal=null;projectSkills().forEach(s=>s.links=s.links.map(()=> 'conflict'));return toast('中心路径已保存；旧链接待另行处理');}
+      if(a==='discard-yaml'){state.dirty=false;state.yamlDraft=null;return render();}
+      if(a==='save-yaml'){
+        if(shared.scenario==='外部修改')return openModal('external');
+        const text=state.yamlDraft??yamlText();let parsed;
+        try{parsed=parseDemoYaml(text);}catch(error){return toast(error.message);}
+        const before=yamlText().split('\n'),after=text.split('\n');
+        const diff=[...before.filter(x=>x&&!after.includes(x)).map(x=>'- '+x),...after.filter(x=>x&&!before.includes(x)).map(x=>'+ '+x)].join('\n')||'无内容变化';
+        return openModal('yaml-diff',{text,...parsed,diff});
+      }
+      if(a==='commit-yaml'){
+        const oldTargets=[...state.targets];
+        state.skills.forEach(s=>{const before=s.project;s.project=m.ids.includes(s.id);if(s.project&&!before){s.refs++;s.links=oldTargets.map(()=> 'missing');}if(!s.project&&before){s.refs--;state.untracked.push(s.id);}});
+        const detected=oldTargets.filter(t=>t.id==='codex'&&!m.targets.some(x=>x.id===t.id)).map(t=>({...t,source:'自动发现'}));
+        state.targets=[...m.targets,...detected];
+        if(!state.targets.length)state.targets=[{id:'claude-code',name:'Claude Code',path:'.claude/skills',source:'默认回退'}];
+        projectSkills().forEach(s=>{s.links=state.targets.map(t=>{const oldIndex=oldTargets.findIndex(o=>o.id===t.id&&o.path===t.path);return oldIndex<0?'missing':s.links[oldIndex]||'missing';});});
+        state.dirty=false;state.yamlDraft=null;state.modal=null;return toast('项目配置已保存（简化 YAML 演示）');
+      }
+      if(a==='external')return openModal('external');
+      if(a==='reload-external'){const s=state.skills.find(s=>s.id==='api-review');if(s&&!s.removed&&!s.project){s.project=true;s.refs++;s.links=state.targets.map(()=> 'missing');}shared.scenario='标准项目';state.dirty=false;state.yamlDraft=null;state.modal=null;instances.forEach(x=>x.render());return toast('已载入外部版本（演示），本地修改未写入');}
+    }
+    el.addEventListener('click',event=>{
+      const page=event.target.closest('[data-page]');if(page){if(state.dirty)return openModal('message',{title:'有未保存的 YAML 草稿',sub:'请先回到 YAML 保存或放弃修改。'});return navigate(page.dataset.page);}
+      const tab=event.target.closest('[data-tab]');if(tab){if(tab.disabled)return;state.page='project';state.tab=tab.dataset.tab;state.lastWorkspacePage='project';state.search='';state.detail=false;render();return persist(state);}
+      const skill=event.target.closest('[data-skill]');if(skill){state.selected=skill.dataset.skill;state.detail=true;render();return persist(state);}
+      const control=event.target.closest('[data-action]');if(control&&!control.disabled)action(control.dataset.action,control);
+    });
+    el.addEventListener('input',event=>{
+      const input=event.target;
+      if(input.dataset.role==='search'){const start=input.selectionStart;state.search=input.value;render();const next=el.querySelector('[data-role="search"]');next.focus();next.setSelectionRange(start,start);}
+      if(input.dataset.role==='yaml'){state.yamlDraft=input.value;state.dirty=true;const label=el.querySelector('[data-role="yaml-status"]');if(label)label.textContent='未保存';el.querySelector('.sr-footer span:last-child').textContent='配置有未保存修改';}
+    });
+    el.addEventListener('change',event=>{if(event.target.dataset.role==='filter'){state.filter=event.target.value;render();}if(event.target.dataset.role==='nav-select'){if(state.dirty){render();return openModal('message',{title:'有未保存的 YAML 草稿',sub:'保存或放弃草稿后，再切换页面。',path:workspaceConfig()});}const [page,tab]=event.target.value.split(':');if(tab)state.tab=tab;navigate(page);}});
+    el.addEventListener('keydown',event=>{
+      if(event.key==='Escape'&&state.modal){event.preventDefault();closeModal();return;}
+      if((event.metaKey||event.ctrlKey)&&event.key==='k'){event.preventDefault();el.querySelector('[data-role="search"]')?.focus();}
+      if(event.key==='Tab'&&state.modal){const controls=[...el.querySelectorAll('.sr-modal button:not(:disabled),.sr-modal input:not(:disabled),.sr-modal textarea,.sr-modal select')];const first=controls[0],last=controls[controls.length-1];if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}}
+    });
+    snapshotWorkspace();
+    state.workspaceRecords['~/Projects/new-project']={name:'new-project',initialized:false,skillIds:[],links:{},targets:[],untracked:[]};
+    if(root.dataset?.example==='initialize')selectWorkspace('~/Projects/new-project',{save:false});else render();
+    return {state,render,el};
+  }
+  instances.push(makeApp('sr-workbench'));
+  function applyDesign(){root.querySelectorAll('.sr').forEach(el=>el.style.setProperty('--s-row',shared.density==='紧凑'?'11px':'16px'));instances.forEach(x=>x.render());}
+  if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:applyDesign});tweak.addSelect(shared,'density',{label:'列表密度',options:['舒适','紧凑']});tweak.addSelect(shared,'scenario',{label:'项目状态',options:['标准项目','YAML 错误','外部修改']});tweak.addSelect(shared,'initOutcome',{label:'初始化结果',options:['成功','首次失败']});}
+  window.addEventListener('openai:set_globals',event=>{const value=event.detail?.globals?.widgetState?.privateContent;if(!value)return;instances.forEach(x=>{if(navs.some(n=>n.id===value.page))x.state.page=value.page;if(['skills','targets','yaml'].includes(value.tab))x.state.tab=value.tab;x.render();});});
+})();
+</script>

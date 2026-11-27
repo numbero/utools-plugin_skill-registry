@@ -1,0 +1,27 @@
+# Dependencies and generated plugin packages
+node_modules/
+dist/
+release/
+coverage/
+*.log
+*.zip
+*.upxs
+*.tgz
+
+# Host-specific skills, settings, credentials and temporary files
+.skill-registry/
+.agents/
+.claude/
+.env
+.env.*
+!.env.example
+*.bak
+*.tmp
+.DS_Store
+
+# Generated design exports; keep editable HTML/SVG/templates and export scripts
+docs/design/preview.html
+docs/design/initialization-preview.html
+docs/brand/**/*.png
+docs/brand/**/comparison.html
+docs/brand/**/comparison.svg

@@ -1,0 +1,50 @@
+<div id="sr-flat-icon-options" aria-label="SkillRegistory 扁平图标方案">
+  <div class="sr-fi-grid" role="group" aria-label="选择图标方案">
+    <button type="button" class="sr-fi-option cursor-interaction" data-choice="classic-stack" aria-pressed="true"><img alt="" width="128" height="128"><strong>经典叠片</strong><span>三层结构，最接近原图标</span></button>
+    <button type="button" class="sr-fi-option cursor-interaction" data-choice="light-stack" aria-pressed="false"><img alt="" width="128" height="128"><strong>双层轻叠</strong><span>减少一层，轮廓更轻</span></button>
+    <button type="button" class="sr-fi-option cursor-interaction" data-choice="offset-cards" aria-pressed="false"><img alt="" width="128" height="128"><strong>错位叠卡</strong><span>正面卡片，规整直接</span></button>
+    <button type="button" class="sr-fi-option cursor-interaction" data-choice="shared-source" aria-pressed="false"><img alt="" width="128" height="128"><strong>同源连接</strong><span>一个来源，连接多个目标</span></button>
+    <button type="button" class="sr-fi-option cursor-interaction" data-choice="linked-tiles" aria-pressed="false"><img alt="" width="128" height="128"><strong>连环菱片</strong><span>交叠菱形，突出引用关系</span></button>
+    <button type="button" class="sr-fi-option cursor-interaction" data-choice="registry-cube" aria-pressed="false"><img alt="" width="128" height="128"><strong>立方仓</strong><span>封闭结构，突出中心仓库</span></button>
+  </div>
+  <div class="sr-fi-selected" aria-live="polite"><span>选中：<strong data-selected-name>经典叠片</strong></span><div class="sr-fi-size"><img data-size="32" alt="选中图标的 32 像素预览" width="32" height="32"><span>32px</span></div><div class="sr-fi-size"><img data-size="48" alt="选中图标的 48 像素预览" width="48" height="48"><span>48px</span></div></div>
+</div>
+<style>
+#sr-flat-icon-options{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:light-dark(#24292f,#e6edf3);font-size:14px;line-height:1.5}
+#sr-flat-icon-options *{box-sizing:border-box}
+#sr-flat-icon-options .sr-fi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#sr-flat-icon-options .sr-fi-option{display:flex;align-items:center;flex-direction:column;gap:8px;min-width:0;margin:0;padding:14px 9px;border:1px solid transparent;border-radius:10px;background:transparent;color:inherit;font:inherit;text-align:center}
+#sr-flat-icon-options .sr-fi-option[aria-pressed="true"]{border-color:light-dark(#0969da,#58a6ff);background:light-dark(#ddf4ff,#12233c)}
+#sr-flat-icon-options .sr-fi-option strong{font-size:14px;font-weight:500}
+#sr-flat-icon-options .sr-fi-option span{font-size:12px;color:light-dark(#57606a,#8b949e);overflow-wrap:anywhere}
+#sr-flat-icon-options .sr-fi-option img{display:block;max-width:100%;height:auto}
+#sr-flat-icon-options .sr-fi-selected{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding-top:18px;margin-top:18px;border-top:1px solid light-dark(#d0d7de,#30363d);font-size:13px}
+#sr-flat-icon-options .sr-fi-selected>span{margin-right:auto}
+#sr-flat-icon-options .sr-fi-selected strong{font-weight:500}
+#sr-flat-icon-options .sr-fi-size{display:flex;align-items:center;gap:9px;color:light-dark(#57606a,#8b949e);font-size:12px}
+@media(max-width:600px){#sr-flat-icon-options .sr-fi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#sr-flat-icon-options .sr-fi-option{padding:12px 6px}#sr-flat-icon-options .sr-fi-selected{gap:16px}}
+</style>
+<script>
+(() => {
+  const root = document.getElementById('sr-flat-icon-options');
+  const options = __FLAT_ICON_OPTIONS__;
+  let selected = options[0].id;
+  const valid = value => options.some(option => option.id === value);
+  try { const saved = window.openai?.widgetState?.privateContent; if (saved?.flatIconVersion === 1 && valid(saved.selected)) selected = saved.selected; } catch {}
+  root.querySelectorAll('button[data-choice]').forEach(button => { button.querySelector('img').src = options.find(option => option.id === button.dataset.choice).images[128]; });
+  function render() {
+    const option = options.find(option => option.id === selected);
+    root.querySelectorAll('button[data-choice]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.choice === selected)));
+    root.querySelector('[data-selected-name]').textContent = option.name;
+    [32, 48].forEach(size => { root.querySelector(`[data-size="${size}"]`).src = option.images[size]; });
+  }
+  root.addEventListener('click', event => {
+    const button = event.target.closest('button[data-choice]');
+    if (!button || !root.contains(button)) return;
+    selected = button.dataset.choice; render();
+    try { window.openai?.setWidgetState({modelContent:{iconDirection:'简洁扁平',selectedIcon:options.find(option=>option.id===selected).name},privateContent:{flatIconVersion:1,selected}})?.catch(()=>{}); } catch {}
+  });
+  window.addEventListener('openai:set_globals', event => { const saved = event.detail?.globals?.widgetState?.privateContent; if (saved?.flatIconVersion === 1 && valid(saved.selected)) { selected = saved.selected; render(); } });
+  render();
+})();
+</script>

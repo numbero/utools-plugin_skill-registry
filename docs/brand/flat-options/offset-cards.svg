@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>SkillRegistory · 错位叠卡</title>
+  <rect width="256" height="256" rx="56" fill="#0D1117"/>
+  <g stroke="#58A6FF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="92" y="58" width="106" height="106" rx="12"/>
+    <rect x="58" y="92" width="106" height="106" rx="12" fill="#0D1117"/>
+  </g>
+</svg>

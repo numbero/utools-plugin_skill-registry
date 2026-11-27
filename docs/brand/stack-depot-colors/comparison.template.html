@@ -1,0 +1,64 @@
+<div id="sr-stack-depot-palettes" aria-label="叠片仓图标配色方案">
+  <div class="sr-sp-grid" role="group" aria-label="选择叠片仓配色">
+    <button type="button" class="sr-sp-option cursor-interaction" data-palette="turquoise" aria-pressed="true"><img alt="" width="128" height="128"><strong>松石青</strong><span>清爽、克制</span></button>
+    <button type="button" class="sr-sp-option cursor-interaction" data-palette="sage" aria-pressed="false"><img alt="" width="128" height="128"><strong>苔叶绿</strong><span>柔和、沉稳</span></button>
+    <button type="button" class="sr-sp-option cursor-interaction" data-palette="amber" aria-pressed="false"><img alt="" width="128" height="128"><strong>暖琥珀</strong><span>温暖、醒目</span></button>
+    <button type="button" class="sr-sp-option cursor-interaction" data-palette="lavender" aria-pressed="false"><img alt="" width="128" height="128"><strong>灰紫</strong><span>低饱和、安静</span></button>
+    <button type="button" class="sr-sp-option cursor-interaction" data-palette="coral" aria-pressed="false"><img alt="" width="128" height="128"><strong>珊瑚橙</strong><span>轻快、鲜明</span></button>
+    <button type="button" class="sr-sp-option cursor-interaction" data-palette="porcelain" aria-pressed="false"><img alt="" width="128" height="128"><strong>瓷白墨色</strong><span>浅底、干净</span></button>
+  </div>
+  <div class="sr-sp-selected" aria-live="polite">
+    <p>选中：<strong data-selected-name>松石青</strong></p>
+    <div class="sr-sp-contexts">
+      <div class="sr-sp-context sr-sp-dark"><span>深色背景</span><div><img data-context="dark" data-size="32" alt="深色背景下的 32 像素预览" width="32" height="32"><small>32px</small><img data-context="dark" data-size="48" alt="深色背景下的 48 像素预览" width="48" height="48"><small>48px</small></div></div>
+      <div class="sr-sp-context sr-sp-light"><span>浅色背景</span><div><img data-context="light" data-size="32" alt="浅色背景下的 32 像素预览" width="32" height="32"><small>32px</small><img data-context="light" data-size="48" alt="浅色背景下的 48 像素预览" width="48" height="48"><small>48px</small></div></div>
+    </div>
+  </div>
+</div>
+<style>
+#sr-stack-depot-palettes{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:light-dark(#24292f,#e6edf3);font-size:14px;line-height:1.5}
+#sr-stack-depot-palettes *{box-sizing:border-box}
+#sr-stack-depot-palettes .sr-sp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#sr-stack-depot-palettes .sr-sp-option{display:flex;align-items:center;flex-direction:column;gap:8px;min-width:0;margin:0;padding:14px 9px;border:1px solid transparent;border-radius:10px;background:transparent;color:inherit;font:inherit;text-align:center}
+#sr-stack-depot-palettes .sr-sp-option[aria-pressed="true"]{border-color:light-dark(#0969da,#58a6ff);background:light-dark(#ddf4ff,#12233c)}
+#sr-stack-depot-palettes .sr-sp-option strong{font-size:14px;font-weight:500}
+#sr-stack-depot-palettes .sr-sp-option span{font-size:12px;color:light-dark(#57606a,#8b949e)}
+#sr-stack-depot-palettes .sr-sp-option img{display:block;max-width:100%;height:auto}
+#sr-stack-depot-palettes .sr-sp-selected{padding-top:18px;margin-top:18px;border-top:1px solid light-dark(#d0d7de,#30363d);font-size:13px}
+#sr-stack-depot-palettes .sr-sp-selected>p{margin:0 0 12px}
+#sr-stack-depot-palettes .sr-sp-selected strong{font-weight:500}
+#sr-stack-depot-palettes .sr-sp-contexts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#sr-stack-depot-palettes .sr-sp-context{border-radius:9px;padding:12px 14px;min-width:0}
+#sr-stack-depot-palettes .sr-sp-context>span{display:block;font-size:12px;margin-bottom:8px}
+#sr-stack-depot-palettes .sr-sp-context>div{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+#sr-stack-depot-palettes .sr-sp-context small{font-size:11px}
+#sr-stack-depot-palettes .sr-sp-dark{background:#0d1117;color:#8b949e}
+#sr-stack-depot-palettes .sr-sp-light{background:#f6f8fa;color:#57606a}
+@media(max-width:600px){#sr-stack-depot-palettes .sr-sp-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#sr-stack-depot-palettes .sr-sp-option{padding:12px 6px}}
+@media(max-width:440px){#sr-stack-depot-palettes .sr-sp-contexts{grid-template-columns:minmax(0,1fr)}}
+</style>
+<script>
+(() => {
+  const root = document.getElementById('sr-stack-depot-palettes');
+  const palettes = __STACK_DEPOT_PALETTES__;
+  let selected = palettes[0].id;
+  const valid = value => palettes.some(palette => palette.id === value);
+  try { const saved = window.openai?.widgetState?.privateContent; if (saved?.stackDepotPaletteVersion === 1 && valid(saved.selected)) selected = saved.selected; } catch {}
+  root.querySelectorAll('button[data-palette]').forEach(button => { button.querySelector('img').src = palettes.find(palette => palette.id === button.dataset.palette).images[128]; });
+  function render() {
+    const palette = palettes.find(palette => palette.id === selected);
+    root.querySelectorAll('button[data-palette]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.palette === selected)));
+    root.querySelector('[data-selected-name]').textContent = palette.name;
+    root.querySelectorAll('img[data-size]').forEach(image => { image.src = palette.images[image.dataset.size]; });
+  }
+  root.addEventListener('click', event => {
+    const button = event.target.closest('button[data-palette]');
+    if (!button || !root.contains(button)) return;
+    selected = button.dataset.palette; render();
+    const palette = palettes.find(palette => palette.id === selected);
+    try { window.openai?.setWidgetState({modelContent:{iconShape:'叠片仓',colorway:palette.name,stroke:palette.stroke,background:palette.background},privateContent:{stackDepotPaletteVersion:1,selected}})?.catch(()=>{}); } catch {}
+  });
+  window.addEventListener('openai:set_globals', event => { const saved = event.detail?.globals?.widgetState?.privateContent; if (saved?.stackDepotPaletteVersion === 1 && valid(saved.selected)) { selected = saved.selected; render(); } });
+  render();
+})();
+</script>
